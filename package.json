@@ -1,0 +1,31 @@
+{
+  "name": "logger",
+  "version": "1.0.0",
+  "description": "Client for logger - a web app for logging and viewing entries",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack -d --watch",
+    "build" : "webpack -p",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/an5rag/logger.git"
+  },
+  "author": "Anurag Choudhary",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/an5rag/logger/issues"
+  },
+  "homepage": "https://github.com/an5rag/logger#readme",
+  "devDependencies": {
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  }
+}
