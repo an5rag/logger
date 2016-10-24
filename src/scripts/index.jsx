@@ -1,16 +1,17 @@
 import React from 'react';
-import {render} from 'react-dom';
-import AwesomeComponent from './components/example.jsx';
+import ReactDOM from 'react-dom';
+import AwesomePage from './pages/example.jsx';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 class App extends React.Component {
   render () {
     return (
       <div>
-        <p> Hello React!!</p>
-        <AwesomeComponent />
+        <AwesomePage />
       </div>
     );
   }
 }
 
 
-render(<App/>, document.getElementById('app'));
+ReactDOM.render(<App/>, document.getElementById('app'));
