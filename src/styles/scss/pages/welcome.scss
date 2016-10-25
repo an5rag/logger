@@ -1,0 +1,66 @@
+.fullScreenBox{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  // flex-wrap: wrap;
+}
+
+.topLinks{
+  // align-self: flex-end;
+  font-size: 14px;
+  // margin-top:10px;
+  color: grey;
+  ul>li{
+    cursor:pointer;
+    display: inline;
+    margin:5px;
+    padding:3px;
+    border-bottom: 0.5px solid lightgrey;
+    transition: all 0.2s;
+    &:hover{
+      color:#0E0B16;
+      border-bottom: 1px solid lightgrey;
+      // border-bottom: 0.5px solid black;
+    }
+  }
+}
+.bottomLinks{
+  // align-self: flex-end;
+  font-size: 14px;
+  // margin-bottom:10px;
+  color:grey;
+}
+.welcomeBox{
+  width: 300px;
+  color:#0E0B16;
+  text-align: center;
+  img{
+    height:150px;
+    width:auto;
+  }
+  .title {
+      font-family: $titleFont;
+      font-size: $mainTitleFontSize;
+      margin: 0px 20px 20px 20px;
+      text-align: center;
+      .subtitle{
+        color:grey;
+        display:block;
+        font-size: 14px;
+      }
+
+  }
+  .mainButton {
+    text-align: center;
+    width: 100%;
+    font-size: $titleFont;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    padding: 10px;
+    &:hover{
+      background-color: #E7DFDD;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+.appBar {
+    width: 100%;
+    background-color: $appBarBackgroundColor;
+    height: $appBarHeight;
+    font-size: $appBarFontSize;
+    color: white;
+    line-height: $appBarHeight;
+    text-align: center;
+
+    .title {
+        font-family: $titleFont;
+        font-size: $titleFontSize;
+    }
+
+    .appBarButton {
+        margin-left: 15px;
+        color: $buttonFontColor;
+        font-size: 15px;
+        text-align: center;
+        border: 1px solid white;
+    }
+
+    .lineSelect {
+        margin-top: 0.7rem;
+
+        .caret {
+            color: white;
+            top: -16px;
+        }
+    }
+}
+
+.entryForm {
+    background-color: $lightGray;
+    margin-top: $rowVerticalMargin;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    min-width: 94vw;
+    min-height: 35vh !important;
+    padding: 2% !important;
+    .entryFormRightColumn{
+      min-height: 30vh;
+    }
+    .entryFormButton {
+        margin-left: 15px;
+        color: white;
+        font-size: 15px;
+        text-align: center;
+        // border: 1px solid black;
+    }
+}
+
+.entryTable {
+    background-color: white;
+    margin-top: $rowVerticalMargin;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    min-width: 94vw;
+    min-height: 45vh !important;
+}
