@@ -4,6 +4,9 @@ import EmployeeDashboard from './pages/employee/dashboard';
 import Manager from './pages/manager/container'
 import ManagerDashboard from './pages/manager/dashboard';
 import Login from './pages/login';
+import Table from './components/reusable/table';
+import FormBuilder from './components/reusable/formBuilder';
+import BuildingBlocks from './components/container';
 
 const states = [
     {
@@ -26,8 +29,24 @@ const states = [
         name: 'manager.dashboard',
         url: '/dashboard',
         component: ManagerDashboard
+    },
+    {
+        name: 'building-blocks',
+        url: '/building-blocks',
+        component: BuildingBlocks
+    },
+    {
+        name: 'building-blocks.table',
+        url: '/table',
+        component: Table
+    },
+    {
+        name: 'building-blocks.form-builder',
+        url: '/form-builder',
+        component: FormBuilder
     }
-]
+
+];
 
 // const people = {
 //   name: 'people',
