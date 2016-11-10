@@ -1,0 +1,122 @@
+.form {
+  .title {
+    @extend %extra-large-font;
+    @extend %semi-bold-font;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: $form-title-color;
+  }
+  .form-chunk {
+    .form-element:first-of-type {
+      border-top: 1px solid $nav-border-color;
+    }
+    .form-element {
+      border-bottom: 1px solid $nav-border-color;
+      min-height: 80px;
+      .name {
+        @extend %medium-font;
+        @extend %semi-bold-font;
+        line-height: 80px;
+      }
+      .value {
+        @extend %medium-font;
+        @extend %light-font;
+        height: 80px;
+        input {
+          position: relative;
+          top: 15px;
+          width: 90%;
+          height: 55%;
+          border-bottom: 1px solid $nav-border-color;
+        }
+      }
+      .add-box{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        @extend %small-font;
+        @extend %light-font;
+        color: $lightGray;
+        text-align: center;
+        .add {
+          cursor: hand;
+          i {
+            margin-right: 10px;
+            position: relative;
+            top: 1px;
+          }
+
+          @extend %slow-transition;
+          &:hover {
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
+
+.submit-button {
+  height: 37px;
+  border-radius: 999em;
+  @extend %small-font;
+  @extend %regular-font;
+  text-align: center;
+  border: 1px solid $nav-border-color;
+  margin: 50px;
+  line-height: 37px;
+  @extend %slow-transition;
+  cursor: hand;
+  background-color: black;
+  color: whitesmoke;
+
+  &:hover {
+    background-color: $darkBlack;
+    //color: white;
+    //border: 1px solid grey;
+
+  }
+}
+
+.form-container-create {
+  padding-left: $form-gutter-create;
+  padding-right: $form-gutter-create;
+}
+.form-container-log {
+  padding-left: $form-gutter-log;
+  padding-right: $form-gutter-log;
+}
+
+.form-chunk-log {
+  .form-element:first-of-type {
+    //border-top: 0.3px solid $nav-border-color;
+  }
+  .form-element {
+    //border-bottom: 0.3px solid $nav-border-color;
+    min-height: 40px;
+    .name {
+      @extend %small-font;
+      @extend %semi-bold-font;
+      line-height: 40px;
+    }
+    .value {
+      @extend %small-font;
+      @extend %light-font;
+      height: 40px;
+      input {
+        position: relative;
+        top: 8px;
+        width: 90%;
+        height: 55%;
+        border-bottom: 1px solid $nav-border-color;
+      }
+    }
+  }
+}
+
+.table-container {
+  padding-left: $table-gutter;
+  padding-right: $table-gutter;
+  margin-top: $table-gutter;
+  margin-bottom: $table-gutter;
+}

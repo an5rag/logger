@@ -1,20 +1,107 @@
-$darkBlack : #2E2E2E;
-$darkGrey : #353535;
-$lightGray : #dedede;
-$lightGreen: #4db6ac;
+// ==========================================================================
+// Loggr variables
+// ==========================================================================
+//
+// Table of Contents:
+//
+//  1. Colors
+//  2. Fonts
+//  3. Text
+//  4. Buttons
+//  5. Navbar
+//  6. SearchBox
 
+// 1. Colors
+// ==========================================================================
+
+$black: black;
+$darkBlack: #2E2E2E;
+$darkGray: #353535;
+$lightGray: #999999;
+$lightestGray: #dddddd;
+$lightGreen: #52b869;
 $navyBlue: #18121E;
-$gunMetal: #233237;
-$rustyRed: #984843;
+$gunMetal: #008949;
+$rustyRed: #873732;
+$rustyRedLight: #CB7B76;
 $warmYellow: #EAC67A;
+
+$title-color: $black;
+$subtitle-color: $darkBlack;
+
+$nav-link-color-light: $lightGreen;
+$nav-link-color-dark: $gunMetal;
+$link-color-light: $lightGray;
+$link-color-dark: $darkBlack;
+
+$heading-color: $darkBlack;
+$text-color: $black;
+
+$error-color: $rustyRedLight;
+$success-color: $gunMetal;
+
+$form-title-color: indianred;
+$form-background-color: $lightGreen;
+
+
+// 2. Fonts
+// ==========================================================================
+
+$title-font: 'Work Sans', sans-serif;
+$primary-font: 'Source Sans Pro', sans-serif;
+
+// 3. Text
+// ==========================================================================
+
+$small-font-size: 17px;
+$small-font-line-height: 20px;
+$medium-font-size: 20px;
+$medium-font-line-height: 28px;
+$large-font-size: 25px;
+$large-font-line-height: 30px;
+$extra-large-font-size: 33px;
+$extra-large-font-line-height: 38px;
+
+// 4. Buttons
+// ==========================================================================
+
+// 4. Navbar
+// ==========================================================================
+
+$nav-bar-height: 70px;
+$nav-gutter: 9%;
+$nav-border-color: $lightestGray;
+$search-box-height: 70px;
+$search-box-width: 40%;
+$navbar-item-margin: 10px;
+$search-box-border-radius: 20%;
+$navbar-background-color: white;
+
+// 5. Forms
+// ==========================================================================
+
+$form-gutter-create: 20%;
+$form-gutter-log: 3%;
+
+
+// 5. Tables
+// ==========================================================================
+$table-gutter: 5%;
+
+// 6. Tables
+// ==========================================================================
+$select-list-element-padding: 12px;
+$select-list-element-color: $darkBlack;
+$select-list-element-hover-color: $darkBlack;
+$select-list-background-color: white;
+$select-list-element-hover-background-color: $lightestGray;
 
 // color pallete
 $primaryColor: $lightGray;
-$secondaryColor: $darkGrey;
+$secondaryColor: $darkGray;
 $accentColor: $lightGreen;
 $backgroundColor: white;
 $darkContrastFontColor: $darkBlack;
-
 
 //backgrounds
 $backgroundColor: $lightGray;
@@ -25,9 +112,9 @@ $rowVerticalMargin: 15px;
 
 //appBars
 $appBarBackgroundColor: $darkBlack;
-$appBarFontSize:1.2em;
-$appBarHeight:75px;
-$appBarFontColor:$lightGray;
+$appBarFontSize: 1.2em;
+$appBarHeight: 75px;
+$appBarFontColor: $lightGray;
 
 //appSectionColors:
 $appSectionColor: $lightGray;
@@ -36,7 +123,6 @@ $appSectionColor: $lightGray;
 $titleFont: 'Work Sans', sans-serif;
 $titleFontSize: 30px;
 $mainTitleFontSize: 60px;
-
 
 //buttons
 $buttonFontColor: white;

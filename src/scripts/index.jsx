@@ -9,7 +9,6 @@ injectTapEventPlugin();
 
 // import fetch polyfill
 // import 'whatwg-fetch';
-
 // import router configuration
 import './router.config.jsx';
 

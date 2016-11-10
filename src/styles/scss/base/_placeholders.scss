@@ -1,0 +1,46 @@
+%light-font {
+  font-family: $primary-font;
+  font-weight: 300;
+}
+
+%regular-font {
+  font-family: $primary-font;
+  font-weight: 400;
+}
+
+%semi-bold-font {
+  font-family: $primary-font;
+  font-weight: 600;
+}
+
+%bold-font {
+  font-family: $primary-font;
+  font-weight: 700;
+}
+
+%small-font {
+  font-size: $small-font-size;
+  line-height: $small-font-line-height;
+}
+
+%medium-font {
+  font-size: $medium-font-size;
+  line-height: $medium-font-line-height;
+}
+
+%large-font {
+  font-size: $large-font-size;
+  line-height: $large-font-line-height;
+}
+
+%extra-large-font {
+  font-size: $extra-large-font-size;
+  line-height: $extra-large-font-line-height;
+}
+
+%slow-transition{
+  transition: all ease 0.3s;
+}
+%fast-transition{
+  transition: all ease 0.2s;
+}

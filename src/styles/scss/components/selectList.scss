@@ -1,0 +1,15 @@
+.select-list{
+  background-color: $select-list-background-color;
+}
+.select-list-element{
+  @extend %regular-font;
+  padding: $select-list-element-padding;
+  color: $select-list-element-color;
+  min-width: 100px;
+  cursor: hand;
+  &:hover{
+    @extend %slow-transition;
+    color:$select-list-element-hover-color;
+    background-color: $select-list-element-hover-background-color;
+  }
+}

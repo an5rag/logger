@@ -13,7 +13,7 @@ var config = {
             path.resolve(__dirname, './node_modules')
         ],
         alias: {
-            components: path.resolve(__dirname, "src", "scripts", "components")
+            buildingBlocks: path.resolve(__dirname, "src", "scripts", "buildingBlocks")
         }
     },
     module: {

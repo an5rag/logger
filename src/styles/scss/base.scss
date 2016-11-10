@@ -1,14 +1,23 @@
 body{
-  background-color: white;
+  background-color: #FAFAFA;
+  text-rendering: optimizeLegibility;
 }
 
 .valign-wrapper{
   justify-content: center !important;
 }
 
-html, h1, h2, h3, h4, h5, div, span, .row{
-  margin: 0;
-  padding: 0;
+//html, h1, h2, h3, h4, h5, div, span, .row{
+//  margin: 0;
+//  padding: 0;
+//}
+
+h1, h2, h3, h4, h5 {
+  font-size: $large-font-size;
+}
+
+.small-text {
+  font-size: $small-font-size;
 }
 
 .centeringContainer{
@@ -16,4 +25,8 @@ html, h1, h2, h3, h4, h5, div, span, .row{
   flex-direction: column;
   justify-content: center;
   align-content: center;
+}
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

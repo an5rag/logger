@@ -1,0 +1,37 @@
+.login-box {
+  @extend %light-font;
+  @extend %medium-font;
+  color: $link-color-dark;
+  width: 300px;
+
+  .error {
+    color: $error-color;
+    text-align: center;
+    margin-bottom: $navbar-item-margin;
+    margin-top: $navbar-item-margin;
+  }
+  .login-box-element {
+    @extend %slow-transition;
+    height: $search-box-height;
+    line-height: $search-box-height;
+    margin: auto;
+    margin-bottom: $navbar-item-margin;
+    border: 1px solid black;
+    .icon-element {
+      margin: auto;
+      height: 100%;
+      padding-left: (2*$navbar-item-margin);
+      padding-right: (2*$navbar-item-margin);
+      line-height: $search-box-height;
+    }
+    input {
+      margin: auto;
+      width: 70%;
+      border-left: 1px solid $nav-border-color;
+      height: 75%;
+      padding-left: $navbar-item-margin;
+      padding-right: $navbar-item-margin;
+
+    }
+  }
+}

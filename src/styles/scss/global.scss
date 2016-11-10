@@ -1,9 +1,3 @@
-/* VENDOR - Default fall-backs and external files.
-========================================================================== */
-
-//@import 'vendor/_normalize.scss';
-
-
 /* BASE - Base Variable file along with starting point Mixins and Placeholders.
 ========================================================================== */
 
@@ -11,32 +5,27 @@
 @import 'base/_mixins.scss';
 @import 'base/_placeholders.scss';
 
-/* COMPONENTS - Mostly just building blocks and app components
+/* MODULES - Re-usable site elements.
 ========================================================================== */
 @import 'components/table.scss';
+@import 'components/navbar.scss';
+@import 'components/searchBox.scss';
+@import 'components/loginBox.scss';
+@import 'components/selectList.scss';
+
 
 /* PAGES- Page
 ========================================================================== */
 
 @import 'base.scss';
-@import 'pages/employee.scss';
-@import 'pages/welcome.scss';
-
-//@import 'framework/_breakpoints.scss';
-//@import 'framework/_layout.scss';
+@import 'pages/login.scss';
+@import 'pages/create.scss';
 
 
 /* FRAMEWORK - Structure and layout files.
 ========================================================================== */
-
-//@import 'framework/_grid.scss';
+@import './../../libs/materialize-src/sass/materialize.scss';
 //@import 'framework/_breakpoints.scss';
 //@import 'framework/_layout.scss';
 
 
-/* MODULES - Re-usable site elements.
-========================================================================== */
-
-//@import 'modules/_buttons.scss';
-//@import 'modules/_lists.scss';
-//@import 'modules/_tabs.scss';

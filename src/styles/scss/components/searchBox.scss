@@ -1,0 +1,29 @@
+.search-box {
+  @extend %light-font;
+  @extend %medium-font;
+  color: $link-color-dark;
+  line-height: $search-box-height;
+
+  .search-icon {
+    margin-left: $navbar-item-margin;
+    margin-right: $navbar-item-margin;
+    @extend %slow-transition;
+    cursor: hand;
+    color: $link-color-light;
+    &:hover {
+      color: $link-color-dark;
+    }
+  }
+
+  input {
+    border-bottom: 1px solid $nav-border-color;
+    width: 0px;
+    margin-right: $navbar-item-margin;
+    @extend %fast-transition;
+    &.full-width {
+      width: $search-box-width;
+    }
+  }
+
+
+}

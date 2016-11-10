@@ -1,0 +1,71 @@
+.navbar {
+  //border-bottom: 1px solid $nav-border-color;
+  background-color: $navbar-background-color;
+}
+
+.navbar-top {
+  margin-left: $nav-gutter;
+  margin-right: $nav-gutter;
+  text-align: center;
+  border-bottom: 1px solid $nav-border-color;
+
+  .title {
+    @extend %bold-font;
+    @extend %extra-large-font;
+    font-family: $title-font;
+    color: $title-color;
+    line-height: $nav-bar-height;
+    .subtitle {
+      @extend %regular-font;
+      color: $subtitle-color;
+      font-family: $primary-font;
+    }
+  }
+
+  .side-links {
+    @extend %regular-font;
+    @extend %medium-font;
+    @extend %slow-transition;
+    line-height: $nav-bar-height;
+    color: $nav-link-color-light;
+    &:hover {
+      color: $nav-link-color-dark;
+    }
+  }
+  .button-links {
+    @extend %light-font;
+    @extend %small-font;
+    @extend %slow-transition;
+    color: $link-color-light;
+    &:hover {
+      color: $link-color-dark;
+    }
+
+  }
+}
+
+.navbar-bottom {
+  margin-left: $nav-gutter;
+  margin-right: $nav-gutter;
+  .navbar-buttons {
+    @extend %regular-font;
+    @extend %small-font;
+    @extend %slow-transition;
+    cursor: hand;
+    line-height: ($nav-bar-height*0.8);
+    margin-left: $navbar-item-margin;
+    margin-right: $navbar-item-margin;
+    min-width: 100px;
+    color: $link-color-light;
+    text-align: center;
+
+    &:hover {
+      @extend %regular-font;
+      color: $link-color-dark;
+    }
+    &.active {
+      border-bottom: 1px solid $link-color-light;
+      color: $link-color-dark;
+    }
+  }
+}

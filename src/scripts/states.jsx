@@ -1,36 +1,51 @@
-// import PeopleService from './common/peopleService';
+import Dashboard from './pages/main/dashboard/dashboard';
+import Log from './pages/main/log/log'
+import Main from './pages/main/main';
+import Login from './pages/login/login';
+import Create from './pages/main/create/create';
 
-import EmployeeDashboard from './pages/employee/dashboard';
-import Manager from './pages/manager/container'
-import ManagerDashboard from './pages/manager/dashboard';
-import Login from './pages/login';
-import Table from './components/reusable/table';
-import FormBuilder from './components/reusable/formBuilder';
-import BuildingBlocks from './components/container';
+//building blocks
+import {NavBarTest} from './buildingBlocks/navbar';
+import {LoginBoxTest} from './buildingBlocks/loginBox';
+import {TableTest} from './buildingBlocks/table';
+import {SearchBoxTest} from './buildingBlocks/searchBox';
+import {FormBuilderTest} from './buildingBlocks/formBuilder';
+import BuildingBlocks from './buildingBlocks/building-blocks';
+
+//services
+import LineService from './services/lineService';
 
 const states = [
     {
         name: 'login',
-        url: '/',
+        url: '/login',
         component: Login
     }, {
-        name: 'employee',
-        url: '/employee',
-        abstract: true
+        name: 'main',
+        url: '',
+        component: Main,
+        abstract: true,
+        resolve: [{
+            token: 'lines',
+            resolveFn: (response) => LineService.getAllLines()
+        }]
     }, {
-        name: 'employeeDashboard',
+        name: 'main.dashboard',
         url: '/dashboard',
-        component: EmployeeDashboard
+        component: Dashboard
     }, {
-        name: 'manager',
-        url: '/manager',
-        component: Manager
+        name: 'main.log',
+        url: '/log',
+        component: Log,
     }, {
-        name: 'manager.dashboard',
-        url: '/dashboard',
-        component: ManagerDashboard
-    },
-    {
+        name: 'main.log.line',
+        url: '/:lineId',
+        component: Log,
+    }, {
+        name: 'main.create',
+        url: '/create',
+        component: Create
+    }, {
         name: 'building-blocks',
         url: '/building-blocks',
         component: BuildingBlocks
@@ -38,14 +53,26 @@ const states = [
     {
         name: 'building-blocks.table',
         url: '/table',
-        component: Table
+        component: TableTest
     },
     {
-        name: 'building-blocks.form-builder',
+        name: 'building-blocks.searchbox',
+        url: '/searchbox',
+        component: SearchBoxTest
+    },
+    {
+        name: 'building-blocks.formbuilder',
         url: '/form-builder',
-        component: FormBuilder
+        component: FormBuilderTest
+    }, {
+        name: 'building-blocks.navbar',
+        url: '/navbar',
+        component: NavBarTest
+    }, {
+        name: 'building-blocks.loginbox',
+        url: '/loginbox',
+        component: LoginBoxTest
     }
-
 ];
 
 // const people = {
