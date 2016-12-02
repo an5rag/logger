@@ -7,6 +7,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
+import LinearProgress from 'material-ui/LinearProgress';
 
 const Main = React.createClass({
 
@@ -118,7 +119,7 @@ const Main = React.createClass({
         if (this.props.page.isLoading) {
             view = (
                 <div className="default-message">
-                    <CircularProgress color="black"/>
+                    <CircularProgress size={80} thickness={5} />
                 </div>
             )
         } else {

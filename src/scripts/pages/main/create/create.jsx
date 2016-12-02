@@ -4,6 +4,7 @@ const axios = require('axios');
 import {setCurrentLine, fetchLines, fetchEntries} from '../../../actions';
 import {connect} from 'react-redux';
 
+const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
 
 
 const Create = React.createClass({
@@ -53,7 +54,7 @@ const Create = React.createClass({
 
         req.token = this.props.user.token;
         const self = this;
-        axios.post('http://localhost:4000/api/line', req)
+        axios.post(API_ADDRESS + '/line', req)
             .then(function (response) {
                 self.props.setCurrentLine(response.data.line);
                 self.props.fetchLines();

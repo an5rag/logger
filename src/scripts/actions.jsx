@@ -1,4 +1,5 @@
 const axios = require('axios');
+const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
@@ -62,7 +63,7 @@ const setUser = (token, name, username, userType) => {
 };
 
 export const login = (username, password) => {
-    const request = axios.post('http://localhost:4000/api/user/authenticate', {username, password});
+    const request = axios.post(API_ADDRESS + '/user/authenticate', {username, password});
 
     return (dispatch) => {
         dispatch(logging());
@@ -85,7 +86,7 @@ export const fetchLines = () => {
             params: {'token': user.token}
         };
 
-        axios.get('http://localhost:4000/api/line'
+        axios.get(API_ADDRESS + '/line'
             , config
         )
             .then((response)=> {
@@ -155,7 +156,7 @@ export const submitEntryForm = () => {
             createdOn: new Date()
         };
 
-        axios.post('http://localhost:4000/api/entry', entry)
+        axios.post(API_ADDRESS + '/entry', entry)
             .then((response)=> {
                 dispatch(clearEntryForm());
             }, (err) => {
@@ -179,7 +180,7 @@ export const fetchEntries = (query) => {
         dispatch(pageLoading());
         const {lines} = getState();
 
-        axios.get('http://localhost:4000/api/entry', {
+        axios.get(API_ADDRESS + '/entry', {
             params: {
                 lineId: lines.currentLine._id
             }
@@ -243,7 +244,7 @@ export const fetchEntries = (query) => {
 export const fetchCurrentEntry = (id) => {
 
     return (dispatch, getState) => {
-        axios.get('http://localhost:4000/api/entry', {
+        axios.get(API_ADDRESS + '/entry', {
             params: {
                 _id: id
             }
