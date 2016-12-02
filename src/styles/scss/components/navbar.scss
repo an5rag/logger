@@ -50,22 +50,30 @@
   .navbar-buttons {
     @extend %regular-font;
     @extend %small-font;
-    @extend %slow-transition;
+    transition: color ease 0.3s;
     cursor: hand;
     line-height: ($nav-bar-height*0.8);
     margin-left: $navbar-item-margin;
     margin-right: $navbar-item-margin;
-    min-width: 100px;
     color: $link-color-light;
-    text-align: center;
 
     &:hover {
       @extend %regular-font;
       color: $link-color-dark;
     }
     &.active {
-      border-bottom: 1px solid $link-color-light;
-      color: $link-color-dark;
+      border-bottom: 1px solid $rustyRed;
+      color: $rustyRed;
     }
   }
+}
+
+.circle-badge {
+  padding: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 3px;
+  border-radius: 10%;
+  background-color: indianred;
+  color: white;
 }

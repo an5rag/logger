@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {SearchBox} from './searchBox';
-import {UISref, UIView} from 'ui-router-react';
+import {UISref, UISrefActive} from 'ui-router-react';
 
 const NavBar = React.createClass({
     propTypes: {
@@ -28,9 +28,11 @@ const NavBar = React.createClass({
                        placeholder={this.props.searchBoxPlaceholder}/>) : null;
         return (
             <div className="navbar">
-                <div className="row navbar-top center-align">
+                <div className="row navbar-top ">
                     <div className="col s12 m6 l5 title">
-                        <span>{this.props.title}</span>
+                        <UISref to={'main.dashboard'}>
+                            <span>{this.props.title}</span>
+                        </UISref>
                         <span className="subtitle"> | {this.props.subtitle}</span>
                     </div>
                     <div className="col l2 hide-on-med-and-down">
@@ -43,11 +45,14 @@ const NavBar = React.createClass({
                 <div className="row navbar-bottom">
                     {
                         this.props.navs.map((nav, index) => {
-                            const classes = 'navbar-buttons col center-align' + (nav.active ? ' active' : null);
+                            const classes = 'navbar-buttons col center-align';
+                            const countBadge = nav.count ? (<span className="circle-badge">{nav.count}</span>) : null;
                             return (
-                                <UISref to={nav.destination} key={index}>
-                                    <span className={classes}>{nav.text}</span>
-                                </UISref>
+                                <UISrefActive class="active" key={index}>
+                                    <UISref to={nav.destination} >
+                                        <span className={classes}>{countBadge} {nav.text}</span>
+                                    </UISref>
+                                </UISrefActive>
                             )
                         })
                     }

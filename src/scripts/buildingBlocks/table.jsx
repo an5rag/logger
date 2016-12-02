@@ -1,134 +1,110 @@
 import React from 'react';
+import moment from 'moment';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const tableHeader = "Awesome Table 1.0";
 
-const tableData = [];
-
-const onRowClick = function (row) {
-    console.log("Clicked row info: ", row);
-};
-const onRowDelete = function (rows) {
-    console.log("Deleted rows info: ", rows);
-};
-
-
-const onRowEdit = function (row) {
-    console.log("Edited row info: ", row);
-};
-
-const options = {
-    editable: true
-};
-
-const myTable = React.createClass({
+const Table = React.createClass({
     propTypes: {
-        tableHeader: React.PropTypes.string,
-        tableData: React.PropTypes.array,
+        tableHeaders: React.PropTypes.array,
+        tableRows: React.PropTypes.array,
         onRowClick: React.PropTypes.func,
-        editable: React.PropTypes.bool,
-        onRowEdit: React.PropTypes.func,
-        onRowsDelete: React.PropTypes.func
     },
+
+    getDefaultProps(){
+        return {
+            tableRows: [],
+            tableHeaders: []
+        }
+    },
+
+    handleRowClick(rowId, event){
+        this.props.onRowClick(rowId);
+
+    },
+
     render() {
+        const headers = this.props.tableHeaders.map((header, index) => {
+            return (
+                <th key={index}>
+                    {header}
+                </th>
+            );
+        });
+
+        const cols = headers.length;
+        const self = this;
+        let rows = this.props.tableRows.map((row, index) => {
+            const rowElements = row.data.map((element, index) => {
+                if (moment(element, moment.ISO_8601, true).isValid())
+                    element = moment(element).fromNow();
+                return (
+                    <td key={index} onClick={self.handleRowClick.bind(this, row.id)}>
+                        {element}
+                    </td>
+                );
+            });
+            return (
+                <tr key={index}>
+                    {rowElements}
+                </tr>
+            )
+
+        });
+
+        if(rows.length == 0) {
+            rows = (
+                <tr>
+                    <td colSpan={cols}>
+                        There is nothing to show here.
+                    </td>
+                </tr>
+            )
+        }
         return (
-            <div className="bb-table">
-                <div className="bb-table-header">
-                    Blahhhhh
-                </div>
-            </div>
+            <table>
+                <thead>
+                <tr>
+                    {headers}
+                </tr>
+                </thead>
+                <tbody>
+                {rows}
+                </tbody>
+            </table>
 
         )
     }
 });
 
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-
-const tableHeaderStyles = {
-    backgroundColor: 'black',
-    color:'white',
-    fontFamily:"'Source Sans Pro', 'sans-serif'",
-};
-const tableHeaderColumnStyles = {
-    fontSize: '18px'
-};
-
-const tableBodyStyles ={
-    fontFamily:"'Source Sans Pro', 'sans-serif'",
-    fontSize: '18px'
-};
 const TableTest = React.createClass({
     onRowSelect(rows){
         console.log(rows);
 
     },
     render(){
+        const headers = ['H1', 'H2', 'H3'];
+        const rows = [
+            [
+                'r1h1',
+                'r1h2',
+                'r1h3'
+            ],
+            [
+                'r2h1',
+                'r2h2',
+                'r2h3'
+            ],
+            [
+                'r3h1',
+                'r3h2',
+                'r3h3',
+            ]
+        ];
         return (
-            <MuiThemeProvider>
-                <Table
-                    onRowSelection={this.onRowSelect}
-                    selectable={true}
-                    height="60vh"
-                    fixedHeader={true}
-                >
-                    <TableHeader style = {tableHeaderStyles}>
-                        <TableRow>
-                            <TableHeaderColumn style={{fontSize: '14px'}}>ID</TableHeaderColumn>
-                            <TableHeaderColumn style={{fontSize: '14px'}}>Name</TableHeaderColumn>
-                            <TableHeaderColumn style={{fontSize: '14px'}}>Status</TableHeaderColumn>
-                            <TableHeaderColumn style={{fontSize: '14px'}}>ID</TableHeaderColumn>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody style={tableBodyStyles} >
-
-                        <TableRow>
-                            <TableRowColumn>3</TableRowColumn>
-                            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                            <TableRowColumn>3</TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>3</TableRowColumn>
-                            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                            <TableRowColumn>3</TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>3</TableRowColumn>
-                            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                            <TableRowColumn>3</TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>4</TableRowColumn>
-                            <TableRowColumn>Steve Brown</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                        </TableRow><TableRow>
-                            <TableRowColumn>3</TableRowColumn>
-                            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                            <TableRowColumn>3</TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>3</TableRowColumn>
-                            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                            <TableRowColumn>3</TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>3</TableRowColumn>
-                            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                            <TableRowColumn>3</TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>4</TableRowColumn>
-                            <TableRowColumn>Steve Brown</TableRowColumn>
-                            <TableRowColumn>Employed</TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </MuiThemeProvider>
+            <Table
+                tableRows={rows}
+                tableHeaders={headers}
+            />
         );
     }
 });

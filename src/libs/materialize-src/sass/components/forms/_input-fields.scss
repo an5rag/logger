@@ -41,7 +41,7 @@ textarea.materialize-textarea {
   //border-bottom: $input-border;
   border-radius: 0;
   outline: none;
-  height: $input-height;
+  //height: $input-height;
   //width: 100%;
   //font-size: $input-font-size;
   //margin: $input-margin;
@@ -246,14 +246,14 @@ textarea.materialize-textarea {
 // Default textarea
 textarea {
   width: 100%;
-  height: $input-height;
+  //height: $input-height;
   background-color: transparent;
 
   &.materialize-textarea {
     overflow-y: hidden; /* prevents scroll bar flash */
     padding: .8rem 0 1.6rem 0; /* prevents text jump on Enter keypress */
     resize: none;
-    min-height: $input-height;
+    //min-height: $input-height;
   }
 }
 

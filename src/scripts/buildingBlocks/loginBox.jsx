@@ -26,7 +26,8 @@ const LoginBox = React.createClass({
 
     },
     onKeyDown(event){
-        if (event.keyCode == 13) {
+        const enterKeyCode = 13;
+        if (event.keyCode == enterKeyCode) {
             this.handleSubmit();
         } else {
             this.setState({errorVisible: false});
@@ -80,7 +81,7 @@ const LoginBox = React.createClass({
                     />
                 </div>
 
-
+                <div className="submit-button" onClick={this.handleSubmit}>Login</div>
             </div>
         )
     }

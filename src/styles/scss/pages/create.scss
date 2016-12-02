@@ -1,12 +1,44 @@
 .form {
+  margin-bottom: 30px;
   .title {
     @extend %extra-large-font;
     @extend %semi-bold-font;
-    text-align: left;
+    text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
+
     color: $form-title-color;
   }
+  .subtitle {
+    @extend %large-font;
+    @extend %semi-bold-font;
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  .add-box{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    @extend %small-font;
+    @extend %light-font;
+    color: $lightGray;
+    text-align: center;
+    .add {
+      cursor: hand;
+      i {
+        margin-right: 10px;
+        position: relative;
+        top: 1px;
+      }
+
+      @extend %slow-transition;
+      &:hover {
+        color: black;
+      }
+    }
+  }
+
+
   .form-chunk {
     .form-element:first-of-type {
       border-top: 1px solid $nav-border-color;
@@ -31,27 +63,7 @@
           border-bottom: 1px solid $nav-border-color;
         }
       }
-      .add-box{
-        margin-top: 20px;
-        margin-bottom: 20px;
-        @extend %small-font;
-        @extend %light-font;
-        color: $lightGray;
-        text-align: center;
-        .add {
-          cursor: hand;
-          i {
-            margin-right: 10px;
-            position: relative;
-            top: 1px;
-          }
 
-          @extend %slow-transition;
-          &:hover {
-            color: black;
-          }
-        }
-      }
     }
   }
 }
@@ -63,7 +75,7 @@
   @extend %regular-font;
   text-align: center;
   border: 1px solid $nav-border-color;
-  margin: 50px;
+  margin: 10px;
   line-height: 37px;
   @extend %slow-transition;
   cursor: hand;
@@ -81,8 +93,10 @@
 .form-container-create {
   padding-left: $form-gutter-create;
   padding-right: $form-gutter-create;
+  margin-bottom: 30px;
 }
 .form-container-log {
+  margin-top: 30px;
   padding-left: $form-gutter-log;
   padding-right: $form-gutter-log;
 }
@@ -115,8 +129,22 @@
 }
 
 .table-container {
-  padding-left: $table-gutter;
-  padding-right: $table-gutter;
-  margin-top: $table-gutter;
-  margin-bottom: $table-gutter;
+  margin-top: 30px;
+  padding-left: $form-gutter-log;
+  padding-right: $form-gutter-log;
+  margin-bottom: 50px;
+}
+
+.table-controls {
+
+  @extend %light-font;
+  @extend %extra-small-font;
+  padding: 15px;
+  .control {
+    cursor: hand;
+    i {
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+  }
 }

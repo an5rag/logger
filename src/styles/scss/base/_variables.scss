@@ -40,7 +40,7 @@ $text-color: $black;
 $error-color: $rustyRedLight;
 $success-color: $gunMetal;
 
-$form-title-color: indianred;
+$form-title-color: #b96161;
 $form-background-color: $lightGreen;
 
 
@@ -53,6 +53,8 @@ $primary-font: 'Source Sans Pro', sans-serif;
 // 3. Text
 // ==========================================================================
 
+$extra-small-font-size: 15px;
+$extra-small-font-line-height: 17px;
 $small-font-size: 17px;
 $small-font-line-height: 20px;
 $medium-font-size: 20px;
@@ -73,7 +75,7 @@ $nav-gutter: 9%;
 $nav-border-color: $lightestGray;
 $search-box-height: 70px;
 $search-box-width: 40%;
-$navbar-item-margin: 10px;
+$navbar-item-margin: 15px;
 $search-box-border-radius: 20%;
 $navbar-background-color: white;
 
@@ -83,12 +85,19 @@ $navbar-background-color: white;
 $form-gutter-create: 20%;
 $form-gutter-log: 3%;
 
+// 5. Form Tables
+// ==========================================================================
+$form-line: solid 0.5px $lightGray;
+$form-label-background: $lightestGray;
+$form-text-color: $black;
+
+
 
 // 5. Tables
 // ==========================================================================
 $table-gutter: 5%;
 
-// 6. Tables
+// 6. Select List
 // ==========================================================================
 $select-list-element-padding: 12px;
 $select-list-element-color: $darkBlack;

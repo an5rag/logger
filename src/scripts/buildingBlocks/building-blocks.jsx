@@ -18,8 +18,8 @@ class BuildingBlocks extends React.Component {
                             text: 'searchBox',
                             destination: 'building-blocks.searchbox'
                         }, {
-                            text: 'FormBuilder',
-                            destination: 'building-blocks.formbuilder'
+                            text: 'FormTable',
+                            destination: 'building-blocks.formtable'
                         },{
                             text: 'table',
                             destination: 'building-blocks.table'

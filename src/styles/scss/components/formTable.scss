@@ -1,0 +1,41 @@
+.form-table{
+  @extend %regular-font;
+  @extend %small-font;
+  border: $form-line;
+  background-color: white;
+
+  .form-label{
+    background-color: $form-label-background;
+    border: $form-line;
+    text-align: center;
+    @extend %semi-bold-font;
+    padding: 12px;
+    height: 45px;
+
+  }
+
+  .form-input{
+    border: $form-line;
+    padding: 12px;
+    height: 45px;
+    input, select{
+      width: 100%;
+      @extend %regular-font;
+    }
+  }
+}
+
+.Select {
+  bottom: 8px;
+  transition: all ease 0.0s;
+}
+
+.time-picker {
+  position: relative;
+  bottom: 13px;
+  @extend %regular-font;
+  @extend %small-font;
+  hr{
+    display: none
+  }
+}

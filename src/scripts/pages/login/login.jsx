@@ -1,19 +1,20 @@
 import React from 'react';
 import {LoginBox} from 'buildingBlocks/loginBox';
-import {UISref} from 'ui-router-react';
-const axios = require('axios');
+import {login} from '../../actions';
+import {connect} from 'react-redux';
+
 
 const Login = React.createClass({
+    componentWillMount(){
+        if (this.props.user.isLoggedIn) {
+            this.props.transition.router.stateService.go('main.dashboard');
+        }
+    },
 
     onSubmit(formData){
-        const props = this.props;
-        const self = this;
-        axios.post('http://localhost:4000/api/user/login', {username: formData.username, password: formData.password})
-            .then(function (response) {
-                props.transition.router.stateService.go('main.dashboard');
-            }, function (error) {
-                alert("Invalid username or password");
-            });
+        const username = formData.username;
+        const password = formData.password;
+        this.props.login(username, password);
     },
 
     getInitialState(){
@@ -23,6 +24,11 @@ const Login = React.createClass({
     },
 
     render() {
+
+        if (this.props.user.isLoggedIn) {
+            this.props.transition.router.stateService.go('main.dashboard');
+        }
+
         return (
             <div>
                 <div className="fullScreenBox">
@@ -55,4 +61,18 @@ const Login = React.createClass({
     }
 });
 
-export default Login;
+
+function mapStateToProps(state) {
+    return {user: state.user}
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        login: function (username, password) {
+            dispatch(login(username, password));
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

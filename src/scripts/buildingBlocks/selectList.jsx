@@ -49,14 +49,5 @@ const SelectList = React.createClass({
 });
 
 
-const SearchBoxTest = React.createClass({
-    render() {
-        return (
-            <SearchBox searchBoxValues={['baconing', 'narwhal', 'a mighty bear canoe']}
-                       placeholder="Enter Search Stuff"/>
-        )
-    }
-});
 
-
-export {SearchBox, SearchBoxTest};
+export {SelectList};

@@ -9,26 +9,20 @@ import {NavBarTest} from './buildingBlocks/navbar';
 import {LoginBoxTest} from './buildingBlocks/loginBox';
 import {TableTest} from './buildingBlocks/table';
 import {SearchBoxTest} from './buildingBlocks/searchBox';
-import {FormBuilderTest} from './buildingBlocks/formBuilder';
+import {FormTableTest} from './buildingBlocks/formTable';
 import BuildingBlocks from './buildingBlocks/building-blocks';
 
-//services
-import LineService from './services/lineService';
 
 const states = [
     {
         name: 'login',
-        url: '/login',
+        url: '',
         component: Login
     }, {
         name: 'main',
         url: '',
         component: Main,
         abstract: true,
-        resolve: [{
-            token: 'lines',
-            resolveFn: (response) => LineService.getAllLines()
-        }]
     }, {
         name: 'main.dashboard',
         url: '/dashboard',
@@ -61,9 +55,9 @@ const states = [
         component: SearchBoxTest
     },
     {
-        name: 'building-blocks.formbuilder',
+        name: 'building-blocks.formtable',
         url: '/form-builder',
-        component: FormBuilderTest
+        component: FormTableTest
     }, {
         name: 'building-blocks.navbar',
         url: '/navbar',
@@ -74,26 +68,5 @@ const states = [
         component: LoginBoxTest
     }
 ];
-
-// const people = {
-//   name: 'people',
-//   url: '/people',
-//   component: People,
-//   resolve: [{
-//     token: 'people',
-//     resolveFn: () => PeopleService.getAllPeople()
-//   }]
-// }
-//
-// const person = {
-//   name: 'person',
-//   url: '/people/:personId',
-//   component: Person,
-//   resolve: [{
-//     token: 'person',
-//     deps: ['$transition$'],
-//     resolveFn: (trans) => PeopleService.getPerson(trans.params().personId)
-//   }]
-// }
 
 export default states;

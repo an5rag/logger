@@ -1,70 +1,119 @@
 import React from 'react';
-import {TableTest} from 'buildingBlocks/table'
+import {Table} from 'buildingBlocks/table'
+import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
+import {connect} from 'react-redux';
+import {updateEntryFormGlobal, updateEntryFormInitial, submitEntryForm, fetchEntries, fetchCurrentEntry} from '../../../actions';
 
 const Log = React.createClass({
 
-    getInitialState(){
-        let lineId = this.props.resolves.$stateParams.lineId;
-        if (!lineId) {
-            lineId = this.props.resolves.lines.data.length > 0 ? this.props.resolves.lines.data[0]._id : 0;
-            // this.props.transition.router.stateService.go('main.log.line', {lineId: randomLineId});
-        }
-        return this.props.resolves.lines.data.find((line) => line._id == lineId);
-    },
-
     render() {
-        console.log(this.state);
+        if (this.props.user.isLoggedIn == undefined) {
+            this.props.transition.router.stateService.go('login');
+        }
+
+        const line = this.props.lines.currentLine;
+
+        if (!line) {
+            return (
+                <div className="default-message">
+                    Select a line from the search bar to begin.
+                </div>
+            )
+        }
+
+
+        const global = [];
+        const initial = [];
+
+        for (let i = 0; i < line.constraints.length; i++) {
+            const element = line.constraints[i];
+            const toPush = {
+                label: element.name,
+                type: element.type,
+            };
+            if (element.type == 'select' && element.categories) {
+                toPush.options = element.categories.map((e, i) => {
+                    return {
+                        label: e,
+                        value: e
+                    }
+                })
+            }
+            if (element.class == 'g') {
+                global.push(toPush)
+            }
+            if (element.class == 'i') {
+                initial.push(toPush);
+            }
+
+        }
+
+
         return (
 
             <div className="row">
                 <div className="form-container-log col s5">
                     <div className="form">
-                        <div className="form-chunk-log">
-
-                            {this.state.constraints.map((element, i) => {
-                                if(element.class=='g')
-                                    return (
-                                        <div className="form-element row">
-                                            <div className="col s6 name">
-                                                {element.name}
-                                            </div>
-                                            <div className="col s6 value">
-                                                <input type="text"/>
-                                            </div>
-                                        </div>
-                                    );
-
-                            })}
-                        </div>
+                        <FormTable
+                            formData={global}
+                            onChange={this.props.updateEntryFormGlobal}
+                        />
                         <div className="title">
-                            {this.state.name}
+                            {line.name}
                         </div>
-                        <div className="form-chunk-log">
+                        <FormTable
+                            formData={initial}
+                            onChange={this.props.updateEntryFormInitial}
+                        />
 
-                                {this.state.constraints.map((element, i) => {
-                                    if(element.class!='g')
-                                    return (
-                                        <div className="form-element row">
-                                            <div className="col s6 name">
-                                                {element.name}
-                                            </div>
-                                            <div className="col s6 value">
-                                                <input type="text"/>
-                                            </div>
-                                        </div>
-                                    );
-
-                                })}
-                        </div>
-                        <div className="submit-button">Add Entry</div>
                     </div>
+                    <div className="submit-button" onClick={this.props.submitEntryForm}>Add Entry</div>
                 </div>
                 <div className="table-container col s7">
-                    <TableTest/>
+                    <div className="table-controls">
+                        <span className="control" onClick={this.props.fetchEntries}>
+                            <i className="fa fa-refresh" aria-hidden="true"></i>
+                            Refresh
+                            </span>
+                    </div>
+                    <Table
+                        tableHeaders={this.props.entries.allEntries.tableColumns}
+                        tableRows={this.props.entries.allEntries.tableRows}
+                        onRowClick={this.props.fetchCurrentEntry}
+                    />
                 </div>
             </div>
         );
     }
 });
 
-export default Log;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        lines: state.lines,
+        entries: state.entries
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        updateEntryFormGlobal: (formAsArray, formAsObject) => {
+            dispatch(updateEntryFormGlobal(formAsObject));
+        },
+        updateEntryFormInitial: (formAsArray, formAsObject) => {
+            dispatch(updateEntryFormInitial(formAsObject));
+        },
+        submitEntryForm: () => {
+            dispatch(submitEntryForm());
+        },
+        fetchEntries: () => {
+            dispatch(fetchEntries());
+        },
+        fetchCurrentEntry: (id) => {
+            dispatch(fetchCurrentEntry(id));
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Log);

@@ -1,12 +1,29 @@
 import React from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import {Provider} from 'react-redux';
+import RootReducer from './reducers'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {UISrefActive, UISref, UIView} from 'ui-router-react';
+import {UIView} from 'ui-router-react';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger'
+
+const loggerMiddleware = createLogger();
+
+const store = createStore(
+    RootReducer,
+    applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware
+    )
+);
 
 const App = () => (
     <div>
-        <MuiThemeProvider>
-            <UIView/>
-        </MuiThemeProvider>
+        <Provider store={store}>
+            <MuiThemeProvider>
+                <UIView/>
+            </MuiThemeProvider>
+        </Provider>
     </div>
 );
 

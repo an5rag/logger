@@ -5,9 +5,14 @@
   @extend %regular-font;
   padding: $select-list-element-padding;
   color: $select-list-element-color;
-  min-width: 100px;
+  min-width: 150px;
   cursor: hand;
   &:hover{
+    @extend %slow-transition;
+    color:$select-list-element-hover-color;
+    background-color: $select-list-element-hover-background-color;
+  }
+  .active{
     @extend %slow-transition;
     color:$select-list-element-hover-color;
     background-color: $select-list-element-hover-background-color;

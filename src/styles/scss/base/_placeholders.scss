@@ -18,6 +18,11 @@
   font-weight: 700;
 }
 
+%extra-small-font {
+  font-size: $extra-small-font-size;
+  line-height: $extra-small-font-line-height;
+}
+
 %small-font {
   font-size: $small-font-size;
   line-height: $small-font-line-height;
@@ -38,9 +43,10 @@
   line-height: $extra-large-font-line-height;
 }
 
-%slow-transition{
+%slow-transition {
   transition: all ease 0.3s;
 }
-%fast-transition{
+
+%fast-transition {
   transition: all ease 0.2s;
 }
