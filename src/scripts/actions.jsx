@@ -4,6 +4,8 @@ const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:40
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
 export const PAGE_LOADED = 'PAGE_LOADED';
+export const ENTRIES_LOADING = 'ENTRIES_LOADING';
+export const ENTRIES_LOADED = 'ENTRIES_LOADED';
 
 // USER ACTIONS
 export const SET_USER = 'SET_USER';
@@ -41,6 +43,18 @@ const pageLoading = ()=> {
 const pageLoaded = ()=> {
     return {
         type: PAGE_LOADED
+    };
+};
+
+const entriesLoading = ()=> {
+    return {
+        type: ENTRIES_LOADING
+    };
+};
+
+const entriesLoaded = ()=> {
+    return {
+        type: ENTRIES_LOADED
     };
 };
 
@@ -177,7 +191,7 @@ export const submitEntryForm = () => {
 export const fetchEntries = (query) => {
 
     return (dispatch, getState) => {
-        dispatch(pageLoading());
+        dispatch(entriesLoading());
         const {lines} = getState();
 
         axios.get(API_ADDRESS + '/entry', {
@@ -233,7 +247,7 @@ export const fetchEntries = (query) => {
 
             })
             .then(()=> {
-                dispatch(pageLoaded());
+                dispatch(entriesLoaded());
             })
         ;
 

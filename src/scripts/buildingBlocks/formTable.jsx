@@ -93,7 +93,6 @@ const TimeInput = React.createClass({
     render(){
         return (
             <TimePicker
-                autoOk={true}
                 value={this.props.value}
                 className="time-picker"
                 hintText={this.props.placeholder}

@@ -57,8 +57,19 @@ const page = (currentState = {}, action) => {
                 isLoading: false
             });
             break;
+        case 'ENTRIES_LOADING':
+            return Object.assign({}, currentState, {
+                entriesLoading: true
+            });
+            break;
+        case 'ENTRIES_LOADED':
+            return Object.assign({}, currentState, {
+                entriesLoading: false
+            });
+            break;
         default:
             return currentState;
+
     }
 };
 

@@ -77,6 +77,7 @@ const Log = React.createClass({
                             </span>
                     </div>
                     <Table
+                        isLoading={this.props.page.entriesLoading}
                         tableHeaders={this.props.entries.allEntries.tableColumns}
                         tableRows={this.props.entries.allEntries.tableRows}
                         onRowClick={this.props.fetchCurrentEntry}
@@ -91,7 +92,8 @@ function mapStateToProps(state) {
     return {
         user: state.user,
         lines: state.lines,
-        entries: state.entries
+        entries: state.entries,
+        page: state.page,
     }
 }
 

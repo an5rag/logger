@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import CircularProgress from 'material-ui/CircularProgress';
 
 
 const Table = React.createClass({
@@ -51,7 +51,7 @@ const Table = React.createClass({
 
         });
 
-        if(rows.length == 0) {
+        if (rows.length == 0) {
             rows = (
                 <tr>
                     <td colSpan={cols}>
@@ -60,20 +60,32 @@ const Table = React.createClass({
                 </tr>
             )
         }
-        return (
-            <table>
-                <thead>
-                <tr>
-                    {headers}
-                </tr>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </table>
 
-        )
+        let view;
+
+        if (this.props.isLoading) {
+            view = (
+                <div className="default-message">
+                    <CircularProgress size={80} thickness={5}/>
+                </div>
+            )
+        } else {
+            view = (
+                <table>
+                    <thead>
+                    <tr>
+                        {headers}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {rows}
+                    </tbody>
+                </table>);
+        }
+
+        return view;
     }
+
 });
 
 const TableTest = React.createClass({
