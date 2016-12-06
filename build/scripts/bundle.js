@@ -23913,9 +23913,7 @@
 	            });
 	            break;
 	        case 'CLEAR_ENTRY_FORM':
-	            return {
-	                submit_status: 'success'
-	            };
+	            return {};
 	        default:
 	            return currentState;
 	    }
@@ -71379,7 +71377,7 @@
 	                    ),
 	                    _react2.default.createElement(_formTable.FormTable, {
 	                        formData: initial,
-	                        onChange: this.props.updateEntryFormInitial
+	                        onChange: this.props.updateEntryFormInitialAndFetch
 	                    })
 	                ),
 	                _react2.default.createElement(
@@ -71426,8 +71424,11 @@
 	        updateEntryFormGlobal: function updateEntryFormGlobal(formAsArray, formAsObject) {
 	            dispatch((0, _actions.updateEntryFormGlobal)(formAsObject));
 	        },
+	        updateEntryFormInitialAndFetch: function updateEntryFormInitialAndFetch(formAsArray, formAsObject) {
+	            dispatch((0, _actions.updateEntryFormInitialAndFetch)(formAsObject));
+	        },
 	        updateEntryFormInitial: function updateEntryFormInitial(formAsArray, formAsObject) {
-	            dispatch((0, _actions.updateEntryFormInitial)(formAsObject));
+	            dispatch((0, _actions.updateEntryFormInitialAndFetch)(formAsObject));
 	        },
 	        submitEntryForm: function submitEntryForm() {
 	            dispatch((0, _actions.submitEntryForm)());
@@ -71456,6 +71457,8 @@
 	    value: true
 	});
 	exports.TableTest = exports.Table = undefined;
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _react = __webpack_require__(/*! react */ 1);
 	
@@ -71505,6 +71508,7 @@
 	        var rows = this.props.tableRows.map(function (row, index) {
 	            var rowElements = row.data.map(function (element, index) {
 	                if ((0, _moment2.default)(element, _moment2.default.ISO_8601, true).isValid()) element = (0, _moment2.default)(element).fromNow();
+	                if ((typeof element === 'undefined' ? 'undefined' : _typeof(element)) == "object") element = "Object";
 	                return _react2.default.createElement(
 	                    'td',
 	                    { key: index, onClick: self.handleRowClick.bind(_this, row.id) },
@@ -87372,7 +87376,7 @@
 	
 	        return _react2.default.createElement('input', { type: 'text',
 	            placeholder: this.props.placeholder,
-	            value: this.props.value,
+	            value: this.props.value ? this.props.value : '',
 	            onChange: this.onChange
 	        });
 	    }
@@ -87401,7 +87405,11 @@
 	var SelectInput = _react2.default.createClass({
 	    displayName: 'SelectInput',
 	    handleChange: function handleChange(value) {
-	        this.props.onChange(value.value);
+	        if (value) {
+	            this.props.onChange(value.value);
+	        } else {
+	            this.props.onChange(value);
+	        }
 	    },
 	    render: function render() {
 	        return _react2.default.createElement(_reactSelect2.default, {
@@ -103121,6 +103129,14 @@
 	    };
 	};
 	
+	var changeLine = exports.changeLine = function changeLine(line) {
+	    return function (dispatch) {
+	        dispatch(setCurrentLine(line));
+	        dispatch(clearEntryForm());
+	        dispatch(fetchEntries());
+	    };
+	};
+	
 	// ---------------------------------------------------------  ENTRY_FORM
 	
 	var updateEntryFormGlobal = exports.updateEntryFormGlobal = function updateEntryFormGlobal(formData) {
@@ -103137,7 +103153,14 @@
 	    };
 	};
 	
-	var clearEntryForm = function clearEntryForm() {
+	var updateEntryFormInitialAndFetch = exports.updateEntryFormInitialAndFetch = function updateEntryFormInitialAndFetch(formData) {
+	    return function (dispatch, getState) {
+	        dispatch(updateEntryFormInitial(formData));
+	        dispatch(fetchEntries());
+	    };
+	};
+	
+	var clearEntryForm = exports.clearEntryForm = function clearEntryForm() {
 	    return {
 	        type: CLEAR_ENTRY_FORM
 	    };
@@ -103175,7 +103198,7 @@
 	// ---------------------------------------------------------  ENTRIES
 	
 	
-	var fetchEntries = exports.fetchEntries = function fetchEntries(query) {
+	var fetchEntries = exports.fetchEntries = function fetchEntries() {
 	
 	    return function (dispatch, getState) {
 	        dispatch(entriesLoading());
@@ -103183,12 +103206,16 @@
 	        var _getState3 = getState();
 	
 	        var lines = _getState3.lines;
+	        var entryForm = _getState3.entryForm;
 	
+	
+	        var query = { lineId: lines.currentLine._id };
+	        for (var key in entryForm.initial) {
+	            if (entryForm.initial[key]) query[key] = entryForm.initial[key];
+	        }
 	
 	        axios.get(API_ADDRESS + '/entry', {
-	            params: {
-	                lineId: lines.currentLine._id
-	            }
+	            params: query
 	        }).then(function (response) {
 	
 	            var entries = response.data.entries;
@@ -103229,6 +103256,7 @@
 	        }, function (err) {}).then(function () {
 	            dispatch(entriesLoaded());
 	        });
+	        return Promise.resolve();
 	    };
 	};
 	
@@ -104969,8 +104997,7 @@
 	            allLines = this.props.lines.allLines.map(function (line) {
 	                return Object.assign({}, line, {
 	                    onClick: function onClick() {
-	                        self.props.setCurrentLine(line);
-	                        self.props.fetchEntries();
+	                        self.props.changeLine(line);
 	                    }
 	                });
 	            });
@@ -105022,11 +105049,8 @@
 	        fetchLines: function fetchLines() {
 	            dispatch((0, _actions.fetchLines)());
 	        },
-	        setCurrentLine: function setCurrentLine(line) {
-	            dispatch((0, _actions.setCurrentLine)(line));
-	        },
-	        fetchEntries: function fetchEntries(query) {
-	            dispatch((0, _actions.fetchEntries)(query));
+	        changeLine: function changeLine(line) {
+	            dispatch((0, _actions.changeLine)(line));
 	        },
 	        openPostEntryModal: function openPostEntryModal() {
 	            dispatch((0, _actions.openPostEntryModal)());

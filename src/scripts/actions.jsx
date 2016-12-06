@@ -16,7 +16,6 @@ export const LOGGING = 'LOGGING';
 export const SET_LINES = 'SET_LINES';
 export const SET_CURRENT_LINE = 'SET_CURRENT_LINE';
 
-
 // ENTRY FORM ACTIONS
 export const UPDATE_ENTRY_FORM_GLOBAL = 'UPDATE_ENTRY_FORM_GLOBAL';
 export const UPDATE_ENTRY_FORM_INITIAL = 'UPDATE_ENTRY_FORM_INITIAL';
@@ -133,6 +132,15 @@ const setLines = (lines) => {
 
 };
 
+export const changeLine = (line) => {
+  return (dispatch) => {
+    dispatch(setCurrentLine(line));
+    dispatch(clearEntryForm());
+    dispatch(fetchEntries());
+  }
+};
+
+
 // ---------------------------------------------------------  ENTRY_FORM
 
 export const updateEntryFormGlobal = (formData) => {
@@ -150,7 +158,15 @@ export const updateEntryFormInitial = (formData) => {
     }
 };
 
-const clearEntryForm = () => {
+export const updateEntryFormInitialAndFetch = (formData) => {
+    return (dispatch, getState) => {
+        dispatch(updateEntryFormInitial(formData));
+        dispatch(fetchEntries());
+      }
+};
+
+
+export const clearEntryForm = () => {
     return {
         type: CLEAR_ENTRY_FORM
     }
@@ -188,16 +204,20 @@ export const submitEntryForm = () => {
 // ---------------------------------------------------------  ENTRIES
 
 
-export const fetchEntries = (query) => {
+export const fetchEntries = () => {
 
     return (dispatch, getState) => {
         dispatch(entriesLoading());
-        const {lines} = getState();
+        const {lines, entryForm} = getState();
+
+        const query = { lineId: lines.currentLine._id };
+        for(let key in entryForm.initial){
+          if(entryForm.initial[key])
+            query[key] = entryForm.initial[key];
+        }
 
         axios.get(API_ADDRESS + '/entry', {
-            params: {
-                lineId: lines.currentLine._id
-            }
+            params: query
         })
             .then((response)=> {
 
@@ -248,8 +268,8 @@ export const fetchEntries = (query) => {
             })
             .then(()=> {
                 dispatch(entriesLoaded());
-            })
-        ;
+            });
+            return Promise.resolve();
 
     };
 

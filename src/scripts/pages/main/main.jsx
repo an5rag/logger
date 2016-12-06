@@ -1,7 +1,7 @@
 import React from 'react';
 import {UISref, UIView} from 'ui-router-react';
 import {NavBar} from 'buildingBlocks/navbar';
-import {fetchLines, setCurrentLine, fetchEntries, openPostEntryModal, closePostEntryModal} from '../../actions';
+import {fetchLines, changeLine, openPostEntryModal, closePostEntryModal} from '../../actions';
 import {connect} from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
@@ -102,8 +102,7 @@ const Main = React.createClass({
             allLines = this.props.lines.allLines.map((line) => {
                 return Object.assign({}, line, {
                     onClick: function () {
-                        self.props.setCurrentLine(line);
-                        self.props.fetchEntries();
+                        self.props.changeLine(line);
                     },
                 });
             });
@@ -159,11 +158,8 @@ function mapDispatchToProps(dispatch) {
         fetchLines: () => {
             dispatch(fetchLines());
         },
-        setCurrentLine: (line) => {
-            dispatch(setCurrentLine(line));
-        },
-        fetchEntries: (query) => {
-            dispatch(fetchEntries(query));
+        changeLine: (line) => {
+            dispatch(changeLine(line));
         },
         openPostEntryModal: () => {
             dispatch(openPostEntryModal());

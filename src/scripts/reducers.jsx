@@ -87,7 +87,6 @@ const entryForm = (currentState = {}, action) => {
             break;
         case 'CLEAR_ENTRY_FORM':
             return {
-              submit_status: 'success'
             };
         default:
             return currentState;

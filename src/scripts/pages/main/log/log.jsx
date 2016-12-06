@@ -2,7 +2,14 @@ import React from 'react';
 import {Table} from 'buildingBlocks/table'
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
 import {connect} from 'react-redux';
-import {updateEntryFormGlobal, updateEntryFormInitial, submitEntryForm, fetchEntries, fetchCurrentEntry} from '../../../actions';
+import {
+    updateEntryFormGlobal,
+    updateEntryFormInitial,
+    updateEntryFormInitialAndFetch,
+    submitEntryForm,
+    fetchEntries,
+    fetchCurrentEntry
+} from '../../../actions';
 
 const Log = React.createClass({
 
@@ -63,7 +70,7 @@ const Log = React.createClass({
                         </div>
                         <FormTable
                             formData={initial}
-                            onChange={this.props.updateEntryFormInitial}
+                            onChange={this.props.updateEntryFormInitialAndFetch}
                         />
 
                     </div>
@@ -102,8 +109,11 @@ function mapDispatchToProps(dispatch) {
         updateEntryFormGlobal: (formAsArray, formAsObject) => {
             dispatch(updateEntryFormGlobal(formAsObject));
         },
+        updateEntryFormInitialAndFetch: (formAsArray, formAsObject) => {
+            dispatch(updateEntryFormInitialAndFetch(formAsObject));
+        },
         updateEntryFormInitial: (formAsArray, formAsObject) => {
-            dispatch(updateEntryFormInitial(formAsObject));
+            dispatch(updateEntryFormInitialAndFetch(formAsObject));
         },
         submitEntryForm: () => {
             dispatch(submitEntryForm());

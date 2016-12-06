@@ -37,6 +37,8 @@ const Table = React.createClass({
             const rowElements = row.data.map((element, index) => {
                 if (moment(element, moment.ISO_8601, true).isValid())
                     element = moment(element).fromNow();
+                if (typeof element == "object")
+                    element = "Object"
                 return (
                     <td key={index} onClick={self.handleRowClick.bind(this, row.id)}>
                         {element}

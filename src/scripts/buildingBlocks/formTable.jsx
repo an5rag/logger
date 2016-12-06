@@ -19,7 +19,7 @@ const TextInput = React.createClass({
         return (
             <input type="text"
                    placeholder={this.props.placeholder}
-                   value={this.props.value}
+                   value={this.props.value ? this.props.value : ''}
                    onChange={this.onChange}
             />
         )
@@ -51,7 +51,12 @@ const NumberInput = React.createClass({
 
 const SelectInput = React.createClass({
     handleChange(value){
-        this.props.onChange(value.value);
+        if(value){
+          this.props.onChange(value.value);
+        }
+        else {
+          this.props.onChange(value);
+        }
     },
     render(){
         return (
