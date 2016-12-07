@@ -9,6 +9,9 @@ import FlatButton from 'material-ui/FlatButton';
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
 import LinearProgress from 'material-ui/LinearProgress';
 
+//modals
+import PostEntryModal from './modals/postEntryModal'
+
 const Main = React.createClass({
 
     componentWillMount(){
@@ -16,82 +19,6 @@ const Main = React.createClass({
     },
 
     render() {
-
-        // modals
-        const postEntryActions = [
-            <FlatButton
-                label="Cancel"
-                primary={true}
-                onTouchTap={this.props.closePostEntryModal}
-            />,
-            <FlatButton
-                label="Clock out Entry"
-                primary={true}
-                onTouchTap={this.props.closePostEntryModal}
-            />,
-        ];
-
-        const line = this.props.lines.currentLine;
-
-        const post = [];
-
-        if(line){
-            for (let i = 0; i < line.constraints.length; i++) {
-                const element = line.constraints[i];
-                const toPush = {
-                    label: element.name,
-                    type: element.type,
-                };
-                if (element.type == 'select' && element.categories) {
-                    toPush.options = element.categories.map((e, i) => {
-                        return {
-                            label: e,
-                            value: e
-                        }
-                    })
-                }
-                if (element.class == 'p') {
-                    post.push(toPush)
-                }
-
-            }
-        }
-
-
-        const postEntryForm = (
-            <FormTable
-                formData={post}
-            />
-        );
-
-        const postEntryMaterial = (
-            <div>
-                {
-                    Object.keys(this.props.entries.currentEntry?this.props.entries.currentEntry : {} ).map((key, index)=>{
-                        return(
-                            <div key={index}>
-                                <b>{key}</b> : <span>{this.props.entries.currentEntry[key]}</span>
-                            </div>
-                        )
-
-                    })
-                }
-                <br/>
-                <br/>
-                {postEntryForm}
-            </div>
-        );
-        const postEntryModal = (
-            <Dialog
-                title="Post Entry"
-                actions={postEntryActions}
-                modal={true}
-                open={this.props.modals.postEntryModal ? this.props.modals.postEntryModal.open : false}
-            >
-                {postEntryMaterial}
-            </Dialog>
-        );
-
         if (this.props.user.isLoggedIn == undefined) {
             this.props.transition.router.stateService.go('login');
         }
@@ -136,8 +63,8 @@ const Main = React.createClass({
                         searchBoxValues={ allLines }
                         searchBoxPlaceholder="Search"
                 />
-                {postEntryModal}
-                {view}
+              <PostEntryModal/>
+              {view}
             </div>
         );
     }
@@ -149,7 +76,6 @@ function mapStateToProps(state) {
         lines: state.lines,
         page: state.page,
         entries: state.entries,
-        modals: state.modals
     }
 }
 
@@ -160,12 +86,6 @@ function mapDispatchToProps(dispatch) {
         },
         changeLine: (line) => {
             dispatch(changeLine(line));
-        },
-        openPostEntryModal: () => {
-            dispatch(openPostEntryModal());
-        },
-        closePostEntryModal: () => {
-            dispatch(closePostEntryModal());
         }
     }
 }

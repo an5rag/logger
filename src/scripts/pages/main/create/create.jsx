@@ -1,10 +1,8 @@
 import React from 'react';
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
 const axios = require('axios');
-import {setCurrentLine, fetchLines, fetchEntries} from '../../../actions';
+import {createLine} from '../../../actions';
 import {connect} from 'react-redux';
-
-const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
 
 
 const Create = React.createClass({
@@ -53,17 +51,9 @@ const Create = React.createClass({
         console.log(req);
 
         req.token = this.props.user.token;
-        const self = this;
-        axios.post(API_ADDRESS + '/line', req)
-            .then(function (response) {
-                self.props.setCurrentLine(response.data.line);
-                self.props.fetchLines();
-                self.props.fetchEntries();
-                self.props.transition.router.stateService.go('main.log');
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+
+        this.props.createLine(req);
+        this.props.transition.router.stateService.go('main.log');
     },
     onChange(index, value){
         const constraintsFormData = this.state.constraintsFormData.slice();
@@ -208,14 +198,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchLines: () => {
-            dispatch(fetchLines());
-        },
-        setCurrentLine: (line) => {
-            dispatch(setCurrentLine(line));
-        },
-        fetchEntries: () => {
-            dispatch(fetchEntries());
+        createLine: (req) => {
+            dispatch(createLine(req));
         }
     }
 }

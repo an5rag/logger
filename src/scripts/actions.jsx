@@ -1,5 +1,6 @@
 const axios = require('axios');
-const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
+// const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
+const API_ADDRESS = "http://localhost:4000/api";
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
@@ -139,6 +140,21 @@ export const changeLine = (line) => {
     dispatch(fetchEntries());
   }
 };
+
+export const createLine = (req) => {
+  return (dispatch) => {
+    axios.post(API_ADDRESS + '/line', req)
+        .then(function (response) {
+            dispatch(setCurrentLine(response.data.line));
+            dispatch(fetchLines());
+            dispatch(clearEntryForm());
+            dispatch(fetchEntries());
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+  }
+}
 
 
 // ---------------------------------------------------------  ENTRY_FORM

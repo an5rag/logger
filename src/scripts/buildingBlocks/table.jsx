@@ -23,35 +23,42 @@ const Table = React.createClass({
     },
 
     render() {
-        const headers = this.props.tableHeaders.map((header, index) => {
-            return (
-                <th key={index}>
-                    {header}
-                </th>
-            );
-        });
+        let headers = [];
+        if(this.props.tableHeaders && this.props.tableHeaders.map) {
+          headers = this.props.tableHeaders.map((header, index) => {
+              return (
+                  <th key={index}>
+                      {header}
+                  </th>
+              );
+          });
+        }
 
         const cols = headers.length;
         const self = this;
-        let rows = this.props.tableRows.map((row, index) => {
-            const rowElements = row.data.map((element, index) => {
-                if (moment(element, moment.ISO_8601, true).isValid())
-                    element = moment(element).fromNow();
-                if (typeof element == "object")
-                    element = "Object"
-                return (
-                    <td key={index} onClick={self.handleRowClick.bind(this, row.id)}>
-                        {element}
-                    </td>
-                );
-            });
-            return (
-                <tr key={index}>
-                    {rowElements}
-                </tr>
-            )
 
-        });
+        let rows = [];
+        if(this.props.tableRows && this.props.tableRows.map) {
+          rows = this.props.tableRows.map((row, index) => {
+              const rowElements = row.data.map((element, index) => {
+                  if (moment(element, moment.ISO_8601, true).isValid())
+                      element = moment(element).fromNow();
+                  if (typeof element == "object")
+                      element = "Object"
+                  return (
+                      <td key={index} onClick={self.handleRowClick.bind(this, row.id)}>
+                          {String(element)}
+                      </td>
+                  );
+              });
+              return (
+                  <tr key={index}>
+                      {rowElements}
+                  </tr>
+              )
+
+          });
+        }
 
         if (rows.length == 0) {
             rows = (

@@ -3,6 +3,7 @@ import Select from 'react-select';
 import {Creatable} from 'react-select';
 import TimePicker from 'material-ui/TimePicker';
 import DatePicker from 'material-ui/DatePicker';
+import _ from 'lodash';
 
 const TextInput = React.createClass({
     getDefaultProps(){
@@ -144,6 +145,28 @@ const FormTable = React.createClass({
         return {
             cols: 1
         }
+    },
+
+    componentWillReceiveProps(nextProps){
+      if(!_.isEqual(this.props.formData, nextProps.formData)){
+        this.resetState(nextProps);
+        console.log("resetting!");
+        return;
+      }
+
+      // TODO: fix for similar length forms
+    },
+
+    resetState(props){
+      const formData = props.formData.map((element) => {
+          return {
+              label: element.label,
+              value: element.value
+          };
+      });
+      this.setState({
+          formData
+        });
     },
 
     getInitialState(){

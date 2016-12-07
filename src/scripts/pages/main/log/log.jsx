@@ -29,8 +29,8 @@ const Log = React.createClass({
         }
 
 
-        const global = [];
-        const initial = [];
+        let global = [];
+        let initial = [];
 
         for (let i = 0; i < line.constraints.length; i++) {
             const element = line.constraints[i];
@@ -63,7 +63,9 @@ const Log = React.createClass({
                     <div className="form">
                         <FormTable
                             formData={global}
+                            key={line.name}
                             onChange={this.props.updateEntryFormGlobal}
+                            ref={(r) => { this.globalFormTable = r; }}
                         />
                         <div className="title">
                             {line.name}
@@ -71,6 +73,7 @@ const Log = React.createClass({
                         <FormTable
                             formData={initial}
                             onChange={this.props.updateEntryFormInitialAndFetch}
+                            ref={(r) => { this.initialFormTable = r; }}
                         />
 
                     </div>
@@ -85,8 +88,8 @@ const Log = React.createClass({
                     </div>
                     <Table
                         isLoading={this.props.page.entriesLoading}
-                        tableHeaders={this.props.entries.allEntries.tableColumns}
-                        tableRows={this.props.entries.allEntries.tableRows}
+                        tableHeaders={this.props.entries.allEntries? this.props.entries.allEntries.tableColumns : null}
+                        tableRows={this.props.entries.allEntries? this.props.entries.allEntries.tableRows : null}
                         onRowClick={this.props.fetchCurrentEntry}
                     />
                 </div>
