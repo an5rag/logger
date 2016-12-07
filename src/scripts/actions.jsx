@@ -1,6 +1,6 @@
 const axios = require('axios');
-// const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
-const API_ADDRESS = "http://localhost:4000/api";
+const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
+// const API_ADDRESS = "http://localhost:4000/api";
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
