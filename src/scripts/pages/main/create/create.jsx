@@ -181,7 +181,7 @@ const Create = React.createClass({
                     </div>
 
                 </div>
-                <div className="submit-button" onClick={this.onSubmit}>Create Line</div>
+                <div className="submit-button" onClick={this.onSubmit}>Create</div>
             </div>
 
         );

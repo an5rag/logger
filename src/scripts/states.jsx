@@ -4,6 +4,7 @@ import JobsInProgress from './pages/main/jobsinProgress/jobsInProgress'
 import Main from './pages/main/main';
 import Login from './pages/login/login';
 import Create from './pages/main/create/create';
+import CreateEmployee from './pages/main/create/createEmployee';
 
 //building blocks
 import {NavBarTest} from './buildingBlocks/navbar';
@@ -40,6 +41,10 @@ const states = [
         name: 'main.create',
         url: '/create',
         component: Create
+    }, {
+        name: 'main.employee',
+        url: '/employee',
+        component: CreateEmployee
     },{
         name: 'main.jobsInProgress',
         url: '/jobsinprogress',

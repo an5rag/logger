@@ -45,26 +45,33 @@ const Main = React.createClass({
         if (this.props.page.isLoading) {
             view = (
                 <div className="default-message">
-                    <CircularProgress size={80} thickness={5} />
+                    <CircularProgress size={80} thickness={5}/>
                 </div>
             )
         } else {
             view = (<UIView/>);
         }
 
+        const navs = [
+            {text: 'Dashboard', destination: 'main.dashboard'},
+            {text: 'Log', destination: 'main.log'},
+            {count: this.props.entries.inProgress, text: 'Jobs in Progress', destination: 'main.jobsInProgress'}
+        ];
+
+        if (this.props.user.userType == 'ADMIN'){
+            navs.push({text: 'Create Line', destination: 'main.create'});
+            navs.push({text: 'Create Employee', destination: 'main.employee'});
+        }
+
         return (
             <div>
                 <NavBar title="loggr" subtitle="ChemPlate" username={userDetail}
-                        navs={[{text: 'Dashboard', destination: 'main.dashboard'},
-                            {text: 'Log', destination: 'main.log'},
-                            {text: 'Create', destination: 'main.create'},
-                            {count: this.props.entries.inProgress, text: 'Jobs in Progress', destination: 'main.jobsInProgress'}
-                        ]}
+                        navs={navs}
                         searchBoxValues={ allLines }
                         searchBoxPlaceholder="Search"
                 />
-              <PostEntryModal/>
-              {view}
+                <PostEntryModal/>
+                {view}
             </div>
         );
     }
