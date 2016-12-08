@@ -67,6 +67,16 @@ const page = (currentState = {}, action) => {
                 entriesLoading: false
             });
             break;
+        case 'MODAL_LOADING':
+            return Object.assign({}, currentState, {
+                modalLoading: true
+            });
+            break;
+        case 'MODAL_LOADED':
+            return Object.assign({}, currentState, {
+                modalLoading: false
+            });
+            break;
         default:
             return currentState;
 
@@ -83,6 +93,11 @@ const entryForm = (currentState = {}, action) => {
         case 'UPDATE_ENTRY_FORM_INITIAL':
             return Object.assign({}, currentState, {
                 initial: action.formData
+            });
+            break;
+        case 'UPDATE_ENTRY_FORM_POST':
+            return Object.assign({}, currentState, {
+                post: action.formData
             });
             break;
         case 'CLEAR_ENTRY_FORM':

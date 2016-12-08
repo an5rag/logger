@@ -6,13 +6,13 @@ class Dashboard extends React.Component {
         return (
             <div className="row">
                 <div className="welcomeBox col s6 offset-s3">
-                    <h1>Welcome!
+                    <h1>Hello!
                     </h1>
                     <p>
                         Welcome to your dashboard. <br/>
-                        Here you'll find insightful analytics and snapshots of your performance.<br/>
-                        If you have higher priviledge, you'll be presented the entire data in a <br/>
-                        consumable and intuitive summary.
+                        Here you'll soon find quick consumable summary of all lines.<br/>
+                        If you have higher privileges, you'll soon be presented ways to export<br/>
+                        your data into formats a Spreadsheet software could use.
                     </p>
                     </div>
             </div>

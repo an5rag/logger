@@ -20,6 +20,7 @@ export const SET_CURRENT_LINE = 'SET_CURRENT_LINE';
 // ENTRY FORM ACTIONS
 export const UPDATE_ENTRY_FORM_GLOBAL = 'UPDATE_ENTRY_FORM_GLOBAL';
 export const UPDATE_ENTRY_FORM_INITIAL = 'UPDATE_ENTRY_FORM_INITIAL';
+export const UPDATE_ENTRY_FORM_POST = 'UPDATE_ENTRY_FORM_POST';
 export const CLEAR_ENTRY_FORM = 'CLEAR_ENTRY_FORM';
 
 // ENTRIES
@@ -30,9 +31,11 @@ const SET_IN_PROGRESS_ENTRIES = 'SET_IN_PROGRESS_ENTERIES';
 // MODALS
 const OPEN_POST_ENTRY_MODAL = 'OPEN_POST_ENTRY_MODAL';
 const CLOSE_POST_ENTRY_MODAL = 'CLOSE_POST_ENTRY_MODAL';
+export const MODAL_LOADING = 'MODAL_LOADING';
+export const MODAL_LOADED = 'MODAL_LOADED';
 
 
-// ---------------------------------------------------------  MAIN
+// ---------------------------------------------------------  PAGE
 
 const pageLoading = ()=> {
     return {
@@ -55,6 +58,18 @@ const entriesLoading = ()=> {
 const entriesLoaded = ()=> {
     return {
         type: ENTRIES_LOADED
+    };
+};
+
+const modalLoading = ()=> {
+    return {
+        type: MODAL_LOADING
+    };
+};
+
+const modalLoaded = ()=> {
+    return {
+        type: MODAL_LOADED
     };
 };
 
@@ -134,27 +149,27 @@ const setLines = (lines) => {
 };
 
 export const changeLine = (line) => {
-  return (dispatch) => {
-    dispatch(setCurrentLine(line));
-    dispatch(clearEntryForm());
-    dispatch(fetchEntries());
-  }
+    return (dispatch) => {
+        dispatch(setCurrentLine(line));
+        dispatch(clearEntryForm());
+        dispatch(fetchEntries());
+    }
 };
 
 export const createLine = (req) => {
-  return (dispatch) => {
-    axios.post(API_ADDRESS + '/line', req)
-        .then(function (response) {
-            dispatch(setCurrentLine(response.data.line));
-            dispatch(fetchLines());
-            dispatch(clearEntryForm());
-            dispatch(fetchEntries());
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-  }
-}
+    return (dispatch) => {
+        axios.post(API_ADDRESS + '/line', req)
+            .then(function (response) {
+                dispatch(setCurrentLine(response.data.line));
+                dispatch(fetchLines());
+                dispatch(clearEntryForm());
+                dispatch(fetchEntries());
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+};
 
 
 // ---------------------------------------------------------  ENTRY_FORM
@@ -174,11 +189,18 @@ export const updateEntryFormInitial = (formData) => {
     }
 };
 
+export const updateEntryFormPost = (formData) => {
+    return {
+        type: UPDATE_ENTRY_FORM_POST,
+        formData
+    }
+};
+
 export const updateEntryFormInitialAndFetch = (formData) => {
     return (dispatch, getState) => {
         dispatch(updateEntryFormInitial(formData));
         dispatch(fetchEntries());
-      }
+    }
 };
 
 
@@ -217,6 +239,39 @@ export const submitEntryForm = () => {
     }
 };
 
+export const submitPostEntryForm = (clockOut) => {
+    return (dispatch, getState) => {
+        dispatch(modalLoading());
+        const {user, lines, entryForm, entries} = getState();
+        const currentEntryId = entries.currentEntry._id;
+
+        const entry = {
+            ...entryForm.post,
+        };
+
+        if(clockOut){
+            entry['Employee Clock-out'] = user.username;
+            entry['System Clock-out'] = new Date();
+            entry['inProgress'] = false;
+        }
+
+        axios.put(API_ADDRESS + '/entry/?id='+ currentEntryId, entry)
+            .then((response)=> {
+                dispatch(clearEntryForm());
+            }, (err) => {
+
+            })
+            .then(()=> {
+                dispatch(modalLoaded());
+                dispatch(closePostEntryModal());
+                dispatch(fetchEntries());
+            })
+        ;
+
+    }
+};
+
+
 // ---------------------------------------------------------  ENTRIES
 
 
@@ -226,10 +281,14 @@ export const fetchEntries = () => {
         dispatch(entriesLoading());
         const {lines, entryForm} = getState();
 
-        const query = { lineId: lines.currentLine._id };
-        for(let key in entryForm.initial){
-          if(entryForm.initial[key])
-            query[key] = entryForm.initial[key];
+        if(!lines.currentLine){
+            return dispatch(entriesLoaded());
+        }
+
+        const query = {lineId: lines.currentLine._id};
+        for (let key in entryForm.initial) {
+            if (entryForm.initial[key])
+                query[key] = entryForm.initial[key];
         }
 
         axios.get(API_ADDRESS + '/entry', {
@@ -285,7 +344,7 @@ export const fetchEntries = () => {
             .then(()=> {
                 dispatch(entriesLoaded());
             });
-            return Promise.resolve();
+        return Promise.resolve();
 
     };
 
@@ -336,7 +395,8 @@ export const openPostEntryModal = () => {
 };
 
 export const closePostEntryModal = () => {
-    return {
-        type: CLOSE_POST_ENTRY_MODAL
+    return dispatch => {
+        dispatch({type: CLOSE_POST_ENTRY_MODAL});
+        dispatch(clearEntryForm());
     }
 };

@@ -60,6 +60,9 @@ const SelectInput = React.createClass({
         }
     },
     render(){
+        if(typeof this.props.value != "object") {
+
+        }
         return (
             <Select
                 value={this.props.value}
@@ -303,6 +306,7 @@ const FormTableTest = () =>(
                 label: 'Single Select Input',
                 type: 'select',
                 placeholder: 'Select',
+                value: 'value2',
                 options: [
                     {
                         value: 'value1',

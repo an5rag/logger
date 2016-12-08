@@ -1,5 +1,5 @@
 import React from 'react';
-import {openPostEntryModal, closePostEntryModal} from '../../../actions';
+import {openPostEntryModal, closePostEntryModal, submitPostEntryForm, updateEntryFormPost} from '../../../actions';
 import {connect} from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
@@ -13,39 +13,51 @@ const PostEntryModal = React.createClass({
         const actions = [
             <RaisedButton
                 label="Update"
-                secondary={true}
-                onTouchTap={this.props.closePostEntryModal}
+                primary={true}
+                onTouchTap={this.props.submitPostEntryForm}
+                disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
             />,
           <RaisedButton
                 label="Update and Clock out"
                 primary={true}
-                onTouchTap={this.props.closePostEntryModal}
+                onTouchTap={this.props.submitPostEntryFormAndClockOut}
                 disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
+            />,
+            <RaisedButton
+                label="Cancel"
+                secondary={true}
+                onTouchTap={this.props.closePostEntryModal}
             />,
         ];
 
         const line = this.props.lines.currentLine;
+        const entry = this.props.entries.currentEntry;
 
         const post = [];
 
         if(line){
             for (let i = 0; i < line.constraints.length; i++) {
-                const element = line.constraints[i];
+                const constraint = line.constraints[i];
                 const toPush = {
-                    label: element.name,
-                    type: element.type,
+                    label: constraint.name,
+                    type: constraint.type,
                 };
-                if (element.type == 'select' && element.categories) {
-                    toPush.options = element.categories.map((e, i) => {
+                if (constraint.type == 'select' && constraint.categories) {
+                    toPush.options = constraint.categories.map((e, i) => {
                         return {
                             label: e,
                             value: e
                         }
                     })
                 }
-                if (element.class == 'p') {
+                if(entry && entry[constraint.name] != undefined){
+                    toPush.value = entry[constraint.name];
+                }
+
+                if (constraint.class == 'p') {
                     post.push(toPush)
                 }
+
 
             }
         }
@@ -54,13 +66,27 @@ const PostEntryModal = React.createClass({
         const postEntryForm = (
             <FormTable
                 formData={post}
+                onChange={this.props.updateEntryFormPost}
             />
         );
+        
+        const entryClockedOut = (
+            <div className="modal-message red-text">
+                <br/>
+                This entry has already been clocked out.
+            </div>
+        );
+        
+        let modalForm;
+        if(this.props.entries.currentEntry && this.props.entries.currentEntry.inProgress){
+            modalForm = postEntryForm
+        } else {
+            modalForm = entryClockedOut
+        }
 
         const postEntryMaterial = (
             <div>
-                {postEntryForm}
-                <br/>
+                {modalForm}
                 <br/>
                 {
                     Object.keys(this.props.entries.currentEntry ? this.props.entries.currentEntry : {} ).map((key, index)=>{
@@ -75,6 +101,13 @@ const PostEntryModal = React.createClass({
                 }
             </div>
         );
+
+        const loading = (
+            <div className="default-message">
+                <LinearProgress mode="indeterminate" color="indianred" />
+            </div>
+        );
+
         return (
             <Dialog
                 title="Post Entry"
@@ -84,7 +117,7 @@ const PostEntryModal = React.createClass({
                 autoScrollBodyContent={true}
                 onRequestClose={this.props.closePostEntryModal}
             >
-                {postEntryMaterial}
+                {this.props.page.modalLoading? loading: postEntryMaterial}
             </Dialog>
         );
     }
@@ -107,6 +140,17 @@ function mapDispatchToProps(dispatch) {
         },
         closePostEntryModal: () => {
             dispatch(closePostEntryModal());
+        },
+        submitPostEntryForm: () => {
+            "use strict";
+            dispatch(submitPostEntryForm())
+        },
+        submitPostEntryFormAndClockOut: () => {
+            "use strict";
+            dispatch(submitPostEntryForm(true))
+        },
+        updateEntryFormPost: (formAsArray, formAsObject) => {
+            dispatch(updateEntryFormPost(formAsObject));
         }
     }
 }

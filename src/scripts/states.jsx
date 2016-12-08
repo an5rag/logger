@@ -1,5 +1,6 @@
 import Dashboard from './pages/main/dashboard/dashboard';
 import Log from './pages/main/log/log'
+import JobsInProgress from './pages/main/jobsinProgress/jobsInProgress'
 import Main from './pages/main/main';
 import Login from './pages/login/login';
 import Create from './pages/main/create/create';
@@ -39,6 +40,10 @@ const states = [
         name: 'main.create',
         url: '/create',
         component: Create
+    },{
+        name: 'main.jobsInProgress',
+        url: '/jobsinprogress',
+        component: JobsInProgress
     }, {
         name: 'building-blocks',
         url: '/building-blocks',

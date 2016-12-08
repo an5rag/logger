@@ -58,7 +58,7 @@ const Main = React.createClass({
                         navs={[{text: 'Dashboard', destination: 'main.dashboard'},
                             {text: 'Log', destination: 'main.log'},
                             {text: 'Create', destination: 'main.create'},
-                            {count: '3', text: 'Jobs in Progress', destination: 'main.log'}
+                            {count: this.props.entries.inProgress, text: 'Jobs in Progress', destination: 'main.jobsInProgress'}
                         ]}
                         searchBoxValues={ allLines }
                         searchBoxPlaceholder="Search"
