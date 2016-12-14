@@ -100,9 +100,12 @@ const TimeInput = React.createClass({
     },
 
     render(){
+        let date = this.props.value;
+        if (typeof date == "string")
+            date = new Date(date);
         return (
             <TimePicker
-                value={this.props.value}
+                value={date}
                 className="time-picker"
                 hintText={this.props.placeholder}
                 onChange={this.onChange}
@@ -124,10 +127,13 @@ const DateInput = React.createClass({
     },
 
     render(){
+        let date = this.props.value;
+        if (typeof date == "string")
+            date = new Date(date);
         return (
             <DatePicker
                 autoOk={true}
-                value={this.props.value}
+                value={date}
                 className="time-picker"
                 placeholder={this.props.placeholder}
                 onChange={this.onChange}
