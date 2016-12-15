@@ -85,7 +85,7 @@ const Log = React.createClass({
         return (
 
             <div className="row">
-                <div className="form-container-log col s5">
+                <div className="form-container-log col s12 l5">
                     <div className="form">
                         <FormTable
                             formData={global}
@@ -109,7 +109,7 @@ const Log = React.createClass({
                          onClick={this.props.valid ? this.props.submitEntryForm : null}>Add Entry
                     </div>
                 </div>
-                <div className="table-container col s7">
+                <div className="table-container col s12 l7">
                     <div className="table-controls">
                         <span className="control left clickable" onClick={this.props.fetchEntries}>
                             <i className="fa fa-refresh" aria-hidden="true"></i>

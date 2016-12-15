@@ -4,7 +4,6 @@ import {Creatable} from 'react-select';
 import TimePicker from 'material-ui/TimePicker';
 import DatePicker from 'material-ui/DatePicker';
 import _ from 'lodash';
-import Chips, {Chip} from 'react-chips';
 
 const TextInput = React.createClass({
     getDefaultProps(){
@@ -89,13 +88,37 @@ const MultiSelectInput = React.createClass({
     }
 });
 
-const ChipInput = React.createClass({
+const OptionsInput = React.createClass({
+    getDefaultProps(){
+        return {
+            placeholder: 'Enter items separated by ; or ,',
+            value: []
+        }
+    },
+    onChange(event){
+        const value = event.target.value;
+        const arrayOfItems = _.split(value, /[;,]+/).map(e=>e.trim());
+        if(_.last(event.target.value) == ' '){
+            arrayOfItems[arrayOfItems.length - 1]+=' ';
+        }
+        this.props.onChange(arrayOfItems);
+    },
+
     render(){
+
+        let value;
+        if(this.props.value.length >0){
+            value = this.props.value.reduce((value, current) => value.concat(',' + current));
+        }
+
         return (
-            <textarea
-                value={this.props.value}
-                onChange={this.props.onChange}
-            />
+            <div>
+                <textarea
+                    placeholder={this.props.placeholder}
+                    value={value}
+                    onChange={this.onChange}
+                />
+            </div>
         )
     }
 });
@@ -225,13 +248,13 @@ const FormTable = React.createClass({
     handleIncompleteness(){
         let isValid = true;
         this.state.formData.map((element) => {
-            if(element.required && element.value == undefined || element.value == '' || element.value == null)
+            if (element.required && element.value == undefined || element.value == '' || element.value == null)
                 isValid = false;
         });
         this.setState({
             valid: isValid
         }, () => {
-            if(this.props.handleValidation)
+            if (this.props.handleValidation)
                 this.props.handleValidation(this.state.valid);
         })
     },
@@ -256,8 +279,8 @@ const FormTable = React.createClass({
                     value={value}
                     onChange={onChange}
                 />);
-            case 'chip-input':
-                return (<ChipInput
+            case 'options-input':
+                return (<OptionsInput
                     placeholder={element.placeholder}
                     value={value}
                     onChange={onChange}
@@ -309,8 +332,8 @@ const FormTable = React.createClass({
     render() {
         const formElements = this.props.formData.map((element, index)=> {
             let label = element ? element.label : null;
-            if (element.required){
-                label+=' *';
+            if (element.required) {
+                label += ' *';
             }
             return (
                 <tr key={index}>
@@ -348,8 +371,8 @@ const FormTableTest = () =>(
                 type: 'time',
                 placeholder: 'Enter time',
             }, {
-                label: 'Chip Input',
-                type: 'chip-input',
+                label: 'Options Input',
+                type: 'options-input',
                 placeholder: 'Enter options',
                 value: ['what', 'is'],
                 suggestions: ['you', 'are', 'a', 'hoe']

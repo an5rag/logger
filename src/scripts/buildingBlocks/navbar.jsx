@@ -46,7 +46,7 @@ const NavBar = React.createClass({
                     {
                         this.props.navs.map((nav, index) => {
                             const classes = 'navbar-buttons col center-align';
-                            const countBadge = nav.count == undefined? (<span className="circle-badge">{nav.count}</span>) : null;
+                            const countBadge = nav.count != undefined? (<span className="circle-badge">{nav.count}</span>) : null;
                             return (
                                 <UISrefActive class="active" key={index}>
                                     <UISref to={nav.destination} >

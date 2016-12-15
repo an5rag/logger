@@ -3,7 +3,7 @@ import Log from './pages/main/log/log'
 import JobsInProgress from './pages/main/jobsinProgress/jobsInProgress'
 import Main from './pages/main/main';
 import Login from './pages/login/login';
-import CreateLine from './pages/main/create/createLine';
+import UpdateLine from './pages/main/create/updateLine';
 import CreateEmployee from './pages/main/create/createEmployee';
 
 //building blocks
@@ -40,7 +40,7 @@ const states = [
     }, {
         name: 'main.create',
         url: '/create',
-        component: CreateLine
+        component: UpdateLine
     }, {
         name: 'main.employee',
         url: '/employee',

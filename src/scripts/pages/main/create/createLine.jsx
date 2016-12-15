@@ -39,9 +39,7 @@ const CreateLine = React.createClass({
                 isDisplayed: formData[4].value
             };
             if (toReturn.type == 'select' && formData[3].value) {
-                const categories = formData[3].value.map((text) => {
-                    return text.value;
-                });
+                const categories = formData[3].value;
                 toReturn.categories = categories;
             }
             return toReturn;
@@ -54,6 +52,7 @@ const CreateLine = React.createClass({
         this.props.createLine(req);
         this.props.transition.router.stateService.go('main.log');
     },
+
     onChange(index, value){
         const constraintsFormData = this.state.constraintsFormData.slice();
         constraintsFormData[index] = value;
@@ -61,6 +60,7 @@ const CreateLine = React.createClass({
             constraintsFormData
         });
     },
+
     onBasicFormChange(value){
         this.setState({
             basicFormData: value
@@ -81,12 +81,14 @@ const CreateLine = React.createClass({
                         formData={[
                             {
                                 label: 'Name',
-                                type: 'text'
+                                type: 'text',
+                                required: true
                             }, {
                                 label: 'Class',
                                 type: 'select',
                                 placeholder: 'Select',
                                 multi: false,
+                                required: true,
                                 options: [
                                     {
                                         value: 'i',
@@ -104,6 +106,7 @@ const CreateLine = React.createClass({
                                 type: 'select',
                                 placeholder: 'Select',
                                 multi: false,
+                                required: true,
                                 options: [
                                     {
                                         value: 'select',
@@ -124,13 +127,14 @@ const CreateLine = React.createClass({
                                 ]
                             }, {
                                 label: 'Categories',
-                                type: 'creatable',
+                                type: 'options-input',
                                 placeholder: 'if type is category',
                                 multi: true
                             }, {
                                 label: 'Displayed in Table',
                                 type: 'select',
                                 multi: false,
+                                value:true,
                                 options: [
                                     {
                                         value: true,
