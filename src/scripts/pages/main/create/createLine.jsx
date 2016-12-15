@@ -1,11 +1,10 @@
 import React from 'react';
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
-const axios = require('axios');
 import {createLine} from '../../../actions';
 import {connect} from 'react-redux';
 
 
-const Create = React.createClass({
+const CreateLine = React.createClass({
 
     getInitialState(){
         return {
@@ -151,8 +150,8 @@ const Create = React.createClass({
         }
 
         return (
-            <div className="form-container-create">
-                <div className="form">
+            <div className="form-container-create row">
+                <div className="form col s10 offset-s1 m8 offset-m2">
                     <div className="title">
                         Create Line
                     </div>
@@ -181,7 +180,7 @@ const Create = React.createClass({
                     </div>
 
                 </div>
-                <div className="submit-button" onClick={this.onSubmit}>Create</div>
+                <div className="submit-button col s10 offset-s1 m8 offset-m2" onClick={this.onSubmit}>Create</div>
             </div>
 
         );
@@ -205,4 +204,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Create);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateLine);

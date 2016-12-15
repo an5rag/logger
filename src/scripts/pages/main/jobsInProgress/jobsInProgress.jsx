@@ -7,7 +7,7 @@ import {
     updateEntryFormInitial,
     updateEntryFormInitialAndFetch,
     submitEntryForm,
-    fetchEntries,
+    fetchEntriesInProgress,
     fetchCurrentEntry
 } from '../../../actions';
 
@@ -18,26 +18,23 @@ const JobsInProgress = React.createClass({
             this.props.transition.router.stateService.go('login');
         }
 
-        let rows = [];
-        const allEntries = this.props.entries.allEntries? this.props.entries.allEntries.tableRows: [];
-        for(let i = 0; i<allEntries.length; i++){
-            const currentRow = allEntries[i];
-            if(currentRow.data[1])
-                rows.push(currentRow);
-        }
+        let rows = this.props.entries.entriesInProgress? this.props.entries.entriesInProgress.tableRows: [];
 
         return (
             <div className="row">
                 <div className="table-container col s10 offset-s1">
                     <div className="table-controls">
-                        <span className="control" onClick={this.props.fetchEntries}>
+                        <span className="control left clickable" onClick={this.props.fetchEntriesInProgress}>
                             <i className="fa fa-refresh" aria-hidden="true"></i>
                             Refresh
-                            </span>
+                        </span>
+                        <span className="control right">
+                            Showing {this.props.entries.entriesInProgress ? this.props.entries.entriesInProgress.clientCount : 0} of {this.props.entries.entriesInProgress ? this.props.entries.entriesInProgress.serverCount : 0}
+                        </span>
                     </div>
                     <Table
                         isLoading={this.props.page.entriesLoading}
-                        tableHeaders={this.props.entries.allEntries? this.props.entries.allEntries.tableColumns : null}
+                        tableHeaders={this.props.entries.entriesInProgress? this.props.entries.entriesInProgress.tableColumns : null}
                         tableRows={rows}
                         onRowClick={this.props.fetchCurrentEntry}
                     />
@@ -69,8 +66,8 @@ function mapDispatchToProps(dispatch) {
         submitEntryForm: () => {
             dispatch(submitEntryForm());
         },
-        fetchEntries: () => {
-            dispatch(fetchEntries());
+        fetchEntriesInProgress: () => {
+            dispatch(fetchEntriesInProgress());
         },
         fetchCurrentEntry: (id) => {
             dispatch(fetchCurrentEntry(id));

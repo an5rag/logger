@@ -10,7 +10,7 @@
   border-bottom: 1px solid $nav-border-color;
 
   .title {
-    @extend %bold-font;
+    @extend %semi-bold-font;
     @extend %extra-large-font;
     font-family: $title-font;
     color: $title-color;

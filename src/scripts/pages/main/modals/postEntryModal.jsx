@@ -3,7 +3,7 @@ import {openPostEntryModal, closePostEntryModal, submitPostEntryForm, updateEntr
 import {connect} from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
 import LinearProgress from 'material-ui/LinearProgress';
 

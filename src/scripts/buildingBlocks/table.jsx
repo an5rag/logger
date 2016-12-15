@@ -24,40 +24,40 @@ const Table = React.createClass({
 
     render() {
         let headers = [];
-        if(this.props.tableHeaders && this.props.tableHeaders.map) {
-          headers = this.props.tableHeaders.map((header, index) => {
-              return (
-                  <th key={index}>
-                      {header}
-                  </th>
-              );
-          });
+        if (this.props.tableHeaders && this.props.tableHeaders.map) {
+            headers = this.props.tableHeaders.map((header, index) => {
+                return (
+                    <th key={index}>
+                        {header}
+                    </th>
+                );
+            });
         }
 
         const cols = headers.length;
         const self = this;
 
         let rows = [];
-        if(this.props.tableRows && this.props.tableRows.map) {
-          rows = this.props.tableRows.map((row, index) => {
-              const rowElements = row.data.map((element, index) => {
-                  if (moment(element, moment.ISO_8601, true).isValid())
-                      element = moment(element).fromNow();
-                  if (typeof element == "object")
-                      element = "Object"
-                  return (
-                      <td key={index} onClick={self.handleRowClick.bind(this, row.id)}>
-                          {String(element)}
-                      </td>
-                  );
-              });
-              return (
-                  <tr key={index}>
-                      {rowElements}
-                  </tr>
-              )
+        if (this.props.tableRows && this.props.tableRows.map) {
+            rows = this.props.tableRows.map((row, index) => {
+                const rowElements = row.data.map((element, index) => {
+                    if (moment(element, moment.ISO_8601, true).isValid())
+                        element = moment(element).fromNow();
+                    if (typeof element == "object")
+                        element = "Object";
+                    return (
+                        <td key={index} onClick={self.handleRowClick.bind(this, row.id)}>
+                            {String(element)}
+                        </td>
+                    );
+                });
+                return (
+                    <tr key={index}>
+                        {rowElements}
+                    </tr>
+                )
 
-          });
+            });
         }
 
         if (rows.length == 0) {
@@ -80,16 +80,17 @@ const Table = React.createClass({
             )
         } else {
             view = (
-                <table>
-                    <thead>
-                    <tr>
-                        {headers}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {rows}
-                    </tbody>
-                </table>);
+                    <table className="bb-table">
+                        <thead>
+                        <tr>
+                            {headers}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {rows}
+                        </tbody>
+                    </table>
+            );
         }
 
         return view;
@@ -105,21 +106,27 @@ const TableTest = React.createClass({
     render(){
         const headers = ['H1', 'H2', 'H3'];
         const rows = [
-            [
-                'r1h1',
-                'r1h2',
-                'r1h3'
-            ],
-            [
-                'r2h1',
-                'r2h2',
-                'r2h3'
-            ],
-            [
-                'r3h1',
-                'r3h2',
-                'r3h3',
-            ]
+            {
+                data: [
+                    'r1h1',
+                    'r1h2',
+                    'r1h3'
+                ]
+            },
+            {
+                data: [
+                    'r2h1',
+                    'r2h2',
+                    'r2h3'
+                ]
+            },
+            {
+                data: [
+                    'r3h1',
+                    'r3h2',
+                    'r3h3',
+                ]
+            }
         ];
         return (
             <Table

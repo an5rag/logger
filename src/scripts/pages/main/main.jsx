@@ -55,12 +55,11 @@ const Main = React.createClass({
         const navs = [
             {text: 'Dashboard', destination: 'main.dashboard'},
             {text: 'Log', destination: 'main.log'},
-            {count: this.props.entries.inProgress, text: 'Jobs in Progress', destination: 'main.jobsInProgress'}
+            {count: this.props.entries.entriesInProgress?this.props.entries.entriesInProgress.serverCount:0, text: 'Jobs in Progress', destination: 'main.jobsInProgress'}
         ];
 
         if (this.props.user.userType == 'ADMIN'){
-            navs.push({text: 'Create Line', destination: 'main.create'});
-            navs.push({text: 'Create Employee', destination: 'main.employee'});
+            navs.push({text: 'Create and Manage', destination: 'main.create'});
         }
 
         return (

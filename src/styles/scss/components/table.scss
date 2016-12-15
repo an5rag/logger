@@ -1,32 +1,34 @@
-table, td, th {
+
+.bb-table {
+  width: 100%;
   @extend %regular-font;
   @extend %extra-small-font;
   border: 1px solid #ddd !important;
   border-radius: 0;
   text-align: center !important;
-}
-
-table {
   border-collapse: collapse;
-  width: 100%;
-}
 
-th {
-  @extend %semi-bold-font;
-  background-color: #0a0a0a;
-  color: white;
-}
-tbody {
-  background-color: white;
-  tr {
-    @extend %fast-transition;
-    cursor: hand;
-    &:hover {
-      background-color: whitesmoke;
+  th {
+    @extend %semi-bold-font;
+    background-color: #0a0a0a;
+    color: white;
+  }
+
+  tbody {
+    background-color: white;
+    tr {
+      @extend %fast-transition;
+      cursor: hand;
+      &:hover {
+        background-color: whitesmoke;
+      }
     }
   }
-}
 
-th, td {
-  padding: 15px;
+  th, td {
+    //padding: 15px;
+    border: 1px solid #ddd !important;
+    border-radius: 0;
+    text-align: center !important;
+  }
 }

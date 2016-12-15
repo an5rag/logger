@@ -1,6 +1,6 @@
 const axios = require('axios');
-const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
-// const API_ADDRESS = "http://localhost:4000/api";
+// const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
+const API_ADDRESS = "http://localhost:4000/api";
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
@@ -17,16 +17,21 @@ export const LOGGING = 'LOGGING';
 export const SET_LINES = 'SET_LINES';
 export const SET_CURRENT_LINE = 'SET_CURRENT_LINE';
 
+// EMPLOYEE ACTIONS
+
+
 // ENTRY FORM ACTIONS
 export const UPDATE_ENTRY_FORM_GLOBAL = 'UPDATE_ENTRY_FORM_GLOBAL';
 export const UPDATE_ENTRY_FORM_INITIAL = 'UPDATE_ENTRY_FORM_INITIAL';
 export const UPDATE_ENTRY_FORM_POST = 'UPDATE_ENTRY_FORM_POST';
 export const CLEAR_ENTRY_FORM = 'CLEAR_ENTRY_FORM';
+export const CLEAR_INITIAL_ENTRY_FORM = 'CLEAR_INITIAL_ENTRY_FORM';
+export const SET_ENTRY_FORM_VALID = 'SET_ENTRY_FORM_VALID';
 
 // ENTRIES
 const SET_ENTRIES = 'SET_ENTRIES';
+const SET_ENTRIES_IN_PROGRESS = 'SET_ENTRIES_IN_PROGRESS';
 const SET_CURRENT_ENTRY = 'SET_CURRENT_ENTRY';
-const SET_IN_PROGRESS_ENTRIES = 'SET_IN_PROGRESS_ENTERIES';
 
 // MODALS
 const OPEN_POST_ENTRY_MODAL = 'OPEN_POST_ENTRY_MODAL';
@@ -152,7 +157,7 @@ export const changeLine = (line) => {
     return (dispatch) => {
         dispatch(setCurrentLine(line));
         dispatch(clearEntryForm());
-        dispatch(fetchEntries());
+        dispatch(fetchAllEntries());
     }
 };
 
@@ -163,7 +168,7 @@ export const createLine = (req) => {
                 dispatch(setCurrentLine(response.data.line));
                 dispatch(fetchLines());
                 dispatch(clearEntryForm());
-                dispatch(fetchEntries());
+                dispatch(fetchAllEntries());
             })
             .catch(function (error) {
                 console.log(error);
@@ -210,6 +215,20 @@ export const clearEntryForm = () => {
     }
 };
 
+export const setEntryFormValid = (isValid) => {
+    return {
+        type: SET_ENTRY_FORM_VALID,
+        valid: isValid
+    }
+
+};
+
+export const clearInitialEntryForm = () => {
+    return {
+        type: CLEAR_INITIAL_ENTRY_FORM
+    }
+};
+
 export const submitEntryForm = () => {
     return (dispatch, getState) => {
         dispatch(pageLoading());
@@ -232,7 +251,7 @@ export const submitEntryForm = () => {
             })
             .then(()=> {
                 dispatch(pageLoaded());
-                dispatch(fetchEntries());
+                dispatch(fetchAllEntries());
             })
         ;
 
@@ -249,13 +268,13 @@ export const submitPostEntryForm = (clockOut) => {
             ...entryForm.post,
         };
 
-        if(clockOut){
+        if (clockOut) {
             entry['Employee Clock-out'] = user.username;
             entry['System Clock-out'] = new Date();
             entry['inProgress'] = false;
         }
 
-        axios.put(API_ADDRESS + '/entry/?id='+ currentEntryId, entry)
+        axios.put(API_ADDRESS + '/entry/?id=' + currentEntryId, entry)
             .then((response)=> {
                 dispatch(clearEntryForm());
             }, (err) => {
@@ -264,7 +283,7 @@ export const submitPostEntryForm = (clockOut) => {
             .then(()=> {
                 dispatch(modalLoaded());
                 dispatch(closePostEntryModal());
-                dispatch(fetchEntries());
+                dispatch(fetchAllEntries());
             })
         ;
 
@@ -275,17 +294,64 @@ export const submitPostEntryForm = (clockOut) => {
 // ---------------------------------------------------------  ENTRIES
 
 
-export const fetchEntries = () => {
+const formatEntries = (response, line) => {
+    const serverCount = response.data.count;
+    const entries = response.data.entries;
+    const tableColumns = [];
+    tableColumns.push(
+        'createdOn',
+        'creator',
+        'System Clock-out',
+    );
 
+
+    for (let i = 0; i < line.constraints.length; i++) {
+        const element = line.constraints[i];
+        if (element.isDisplayed) {
+            tableColumns.push(element.name);
+        }
+    }
+
+    const tableRows = [];
+    for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        const currentRow = [];
+        for (let j = 0; j < tableColumns.length; j++) {
+            if (entry[tableColumns[j]] != undefined) {
+                currentRow.push(entry[tableColumns[j]]);
+            } else {
+                currentRow.push('N/A');
+            }
+        }
+        tableRows.push(
+            {
+                id: entry._id,
+                data: currentRow
+            }
+        );
+    }
+
+    const clientCount = tableRows.length;
+
+    return {
+        tableColumns,
+        tableRows,
+        clientCount,
+        serverCount
+    };
+
+};
+
+export const fetchEntries = () => {
     return (dispatch, getState) => {
         dispatch(entriesLoading());
         const {lines, entryForm} = getState();
 
-        if(!lines.currentLine){
+        if (!lines.currentLine) {
             return dispatch(entriesLoaded());
         }
 
-        const query = {lineId: lines.currentLine._id};
+        const query = {lineId: lines.currentLine._id, limit: 25};
         for (let key in entryForm.initial) {
             if (entryForm.initial[key])
                 query[key] = entryForm.initial[key];
@@ -295,48 +361,7 @@ export const fetchEntries = () => {
             params: query
         })
             .then((response)=> {
-
-                const entries = response.data.entries;
-                const tableColumns = [];
-                tableColumns.push(
-                    'createdOn',
-                    'inProgress',
-                    'creator',
-                    'endedOn',
-                );
-
-                const line = lines.currentLine;
-                for (let i = 0; i < line.constraints.length; i++) {
-                    const element = line.constraints[i];
-                    if (element.isDisplayed) {
-                        tableColumns.push(element.name);
-                    }
-                }
-
-                const tableRows = [];
-                for (let i = 0; i < entries.length; i++) {
-                    const entry = entries[i];
-                    const currentRow = [];
-                    for (let j = 0; j < tableColumns.length; j++) {
-                        if (entry[tableColumns[j]] != undefined) {
-                            currentRow.push(entry[tableColumns[j]]);
-                        } else {
-                            currentRow.push('N/A');
-                        }
-                    }
-                    tableRows.push(
-                        {
-                            id: entry._id,
-                            data: currentRow
-                        }
-                    );
-                }
-
-                const result = {
-                    tableColumns,
-                    tableRows
-                };
-
+                const result = formatEntries(response, lines.currentLine);
                 dispatch(setEntries(result));
             }, (err) => {
 
@@ -345,9 +370,45 @@ export const fetchEntries = () => {
                 dispatch(entriesLoaded());
             });
         return Promise.resolve();
-
     };
+};
 
+export const fetchEntriesInProgress = () => {
+    return (dispatch, getState) => {
+        dispatch(entriesLoading());
+        const {lines} = getState();
+
+        if (!lines.currentLine) {
+            return dispatch(entriesLoaded());
+        }
+
+        const query = {
+            lineId: lines.currentLine._id,
+            limit: 50,
+            inProgress: true
+        };
+
+        axios.get(API_ADDRESS + '/entry', {
+            params: query
+        })
+            .then((response)=> {
+                const result = formatEntries(response, lines.currentLine);
+                dispatch(setEntriesInProgress(result));
+            }, (err) => {
+
+            })
+            .then(()=> {
+                dispatch(entriesLoaded());
+            });
+        return Promise.resolve();
+    };
+};
+
+export const fetchAllEntries = () =>{
+    return (dispatch) => {
+        dispatch(fetchEntries());
+        dispatch(fetchEntriesInProgress());
+    };
 };
 
 export const fetchCurrentEntry = (id) => {
@@ -382,6 +443,13 @@ const setCurrentEntry = (entry) => {
 const setEntries = (entries) => {
     return {
         type: SET_ENTRIES,
+        entries
+    }
+};
+
+const setEntriesInProgress = (entries) => {
+    return {
+        type: SET_ENTRIES_IN_PROGRESS,
         entries
     }
 };

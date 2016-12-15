@@ -2,7 +2,7 @@
   margin-bottom: 30px;
   .title {
     @extend %extra-large-font;
-    @extend %semi-bold-font;
+    @extend %regular-font;
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -13,10 +13,11 @@
     @extend %large-font;
     @extend %semi-bold-font;
     text-align: left;
-    margin-top: 30px;
-    margin-bottom: 15px;
+    margin-top: 25px;
+    margin-bottom: 25px;
   }
-  .add-box{
+
+  .add-box {
     margin-top: 20px;
     margin-bottom: 20px;
     @extend %small-font;
@@ -37,44 +38,15 @@
       }
     }
   }
-
-
-  .form-chunk {
-    .form-element:first-of-type {
-      border-top: 1px solid $nav-border-color;
-    }
-    .form-element {
-      border-bottom: 1px solid $nav-border-color;
-      min-height: 80px;
-      .name {
-        @extend %medium-font;
-        @extend %semi-bold-font;
-        line-height: 80px;
-      }
-      .value {
-        @extend %medium-font;
-        @extend %light-font;
-        height: 80px;
-        input {
-          position: relative;
-          top: 15px;
-          width: 90%;
-          height: 55%;
-          border-bottom: 1px solid $nav-border-color;
-        }
-      }
-
-    }
-  }
 }
 
 .submit-button {
   height: 37px;
-  border-radius: 999em;
+  //border-radius: 999em;
   @extend %small-font;
   @extend %regular-font;
   text-align: center;
-  border: 1px solid $nav-border-color;
+  //border: 1px solid $nav-border-color;
   margin: 10px;
   line-height: 37px;
   @extend %slow-transition;
@@ -83,50 +55,28 @@
   color: whitesmoke;
 
   &:hover {
-    background-color: $darkBlack;
+    background-color: $lightGreen;
     //color: white;
     //border: 1px solid grey;
 
   }
+  &.disabled {
+    background-color: $lightGray;
+    cursor: not-allowed;
+  }
 }
 
 .form-container-create {
-  padding-left: $form-gutter-create;
-  padding-right: $form-gutter-create;
   margin-bottom: 30px;
 }
+
 .form-container-log {
   margin-top: 30px;
+  margin-bottom: 20px;
   padding-left: $form-gutter-log;
   padding-right: $form-gutter-log;
 }
 
-.form-chunk-log {
-  .form-element:first-of-type {
-    //border-top: 0.3px solid $nav-border-color;
-  }
-  .form-element {
-    //border-bottom: 0.3px solid $nav-border-color;
-    min-height: 40px;
-    .name {
-      @extend %small-font;
-      @extend %semi-bold-font;
-      line-height: 40px;
-    }
-    .value {
-      @extend %small-font;
-      @extend %light-font;
-      height: 40px;
-      input {
-        position: relative;
-        top: 8px;
-        width: 90%;
-        height: 55%;
-        border-bottom: 1px solid $nav-border-color;
-      }
-    }
-  }
-}
 
 .table-container {
   margin-top: 30px;
@@ -136,15 +86,32 @@
 }
 
 .table-controls {
-
   @extend %light-font;
   @extend %extra-small-font;
+  position: relative;
   padding: 15px;
   .control {
-    cursor: hand;
+    position: absolute;
+    bottom: 10px;
     i {
       margin-left: 6px;
       margin-right: 6px;
     }
+    &.left{
+      left: 5px;
+    }
+    &.right{
+      right: 5px;
+    }
+    &.clickable{
+      cursor: hand;
+    }
   }
+}
+
+.error-message {
+  text-align: center;
+  @extend %extra-small-font;
+  color: indianred;
+  @extend %regular-font;
 }

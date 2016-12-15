@@ -1,36 +1,32 @@
 /* BASE - Base Variable file along with starting point Mixins and Placeholders.
 ========================================================================== */
-.navbar-top .button-links, .search-box, .login-box, .default-message, .form .add-box, .form .form-chunk .form-element .value, .form-chunk-log .form-element .value, .table-controls {
+.navbar-top .button-links, .search-box, .login-box, .default-message, .form .add-box, .table-controls {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300; }
 
-table, td, th, .navbar-top .title .subtitle, .navbar-top .side-links, .navbar-bottom .navbar-buttons, .navbar-bottom .navbar-buttons:hover, .select-list-element, .form-table, .form-table .form-input input, .form-table .form-input select, .time-picker, .submit-button {
+.bb-table, .navbar-top .title .subtitle, .navbar-top .side-links, .navbar-bottom .navbar-buttons, .navbar-bottom .navbar-buttons:hover, .select-list-element, .time-picker, .form-table table, .form-table td, .form-table th, .form .title, .submit-button, .error-message {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 400; }
 
-th, .form-table .form-label, .form .title, .form .subtitle, .form .form-chunk .form-element .name, .form-chunk-log .form-element .name {
+.bb-table th, .navbar-top .title, .form-table .form-label, .form .subtitle {
   font-family: "Source Sans Pro", sans-serif;
-  font-weight: 600; }
+  font-weight: 500; }
 
-.navbar-top .title {
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: 700; }
-
-table, td, th, .table-controls {
+.bb-table, .table-controls, .error-message {
   font-size: 15px;
   line-height: 17px; }
 
-.navbar-top .button-links, .navbar-bottom .navbar-buttons, .form-table, .time-picker, .form .add-box, .submit-button, .form-chunk-log .form-element .name, .form-chunk-log .form-element .value {
+.navbar-top .button-links, .navbar-bottom .navbar-buttons, .time-picker, .form-table table, .form-table td, .form-table th, .form .add-box, .submit-button {
   font-size: 17px;
   line-height: 20px; }
 
-.navbar-top .side-links, .search-box, .login-box, .default-message, .form .form-chunk .form-element .name, .form .form-chunk .form-element .value {
+.navbar-top .side-links, .search-box, .login-box, .default-message {
   font-size: 20px;
   line-height: 28px; }
 
 .form .subtitle {
   font-size: 25px;
-  line-height: 30px; }
+  line-height: 32px; }
 
 .navbar-top .title, .form .title {
   font-size: 33px;
@@ -39,33 +35,30 @@ table, td, th, .table-controls {
 .navbar-top .side-links, .navbar-top .button-links, .search-box .search-icon, .login-box .login-box-element, .select-list-element:hover, .select-list-element .active, .form .add-box .add, .submit-button {
   transition: all ease 0.3s; }
 
-tbody tr, .search-box input {
+.bb-table tbody tr, .search-box input {
   transition: all ease 0.2s; }
 
 /* MODULES - Re-usable site elements.
 ========================================================================== */
-table, td, th {
+.bb-table {
+  width: 100%;
   border: 1px solid #ddd !important;
   border-radius: 0;
-  text-align: center !important; }
-
-table {
-  border-collapse: collapse;
-  width: 100%; }
-
-th {
-  background-color: #0a0a0a;
-  color: white; }
-
-tbody {
-  background-color: white; }
-  tbody tr {
-    cursor: hand; }
-    tbody tr:hover {
-      background-color: whitesmoke; }
-
-th, td {
-  padding: 15px; }
+  text-align: center !important;
+  border-collapse: collapse; }
+  .bb-table th {
+    background-color: #0a0a0a;
+    color: white; }
+  .bb-table tbody {
+    background-color: white; }
+    .bb-table tbody tr {
+      cursor: hand; }
+      .bb-table tbody tr:hover {
+        background-color: whitesmoke; }
+  .bb-table th, .bb-table td {
+    border: 1px solid #ddd !important;
+    border-radius: 0;
+    text-align: center !important; }
 
 .navbar {
   background-color: white; }
@@ -179,31 +172,30 @@ th, td {
     color: #2E2E2E;
     background-color: #dddddd; }
 
-.form-table {
-  border: solid 0.5px #999999;
-  background-color: white; }
-  .form-table .form-label {
-    background-color: #dddddd;
-    border: solid 0.5px #999999;
-    text-align: center;
-    padding: 12px;
-    height: 45px; }
-  .form-table .form-input {
-    border: solid 0.5px #999999;
-    padding: 12px;
-    height: 45px; }
-    .form-table .form-input input, .form-table .form-input select {
-      width: 100%; }
-
-.Select {
-  bottom: 8px;
-  transition: all ease 0.0s; }
-
 .time-picker {
-  position: relative;
-  bottom: 13px; }
+  position: relative; }
   .time-picker hr {
     display: none; }
+
+.form-table table, .form-table td, .form-table th {
+  width: 100%;
+  border: 1px solid #b9b7b7 !important;
+  border-radius: 0;
+  text-align: center !important;
+  table-layout: fixed; }
+.form-table table {
+  border-collapse: collapse;
+  width: 100%; }
+.form-table .form-label {
+  background-color: #dddddd; }
+.form-table tbody {
+  background-color: white; }
+.form-table th, .form-table td {
+  padding: 12px 15px;
+  width: 50%;
+  min-height: 60px; }
+  .form-table th input, .form-table td input {
+    width: 100%; }
 
 /* PAGES- Page
 ========================================================================== */
@@ -231,13 +223,13 @@ h1, h2, h3, h4, h5 {
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px; }
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2); }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  background-color: rgb(255, 255, 255);
-}
+  background-color: white;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); }
 
 .default-message {
   text-align: center;
@@ -303,8 +295,8 @@ h1, h2, h3, h4, h5 {
     color: #b96161; }
   .form .subtitle {
     text-align: left;
-    margin-top: 30px;
-    margin-bottom: 15px; }
+    margin-top: 25px;
+    margin-bottom: 25px; }
   .form .add-box {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -318,57 +310,29 @@ h1, h2, h3, h4, h5 {
         top: 1px; }
       .form .add-box .add:hover {
         color: black; }
-  .form .form-chunk .form-element:first-of-type {
-    border-top: 1px solid #dddddd; }
-  .form .form-chunk .form-element {
-    border-bottom: 1px solid #dddddd;
-    min-height: 80px; }
-    .form .form-chunk .form-element .name {
-      line-height: 80px; }
-    .form .form-chunk .form-element .value {
-      height: 80px; }
-      .form .form-chunk .form-element .value input {
-        position: relative;
-        top: 15px;
-        width: 90%;
-        height: 55%;
-        border-bottom: 1px solid #dddddd; }
 
 .submit-button {
   height: 37px;
-  border-radius: 999em;
   text-align: center;
-  border: 1px solid #dddddd;
   margin: 10px;
   line-height: 37px;
   cursor: hand;
   background-color: black;
   color: whitesmoke; }
   .submit-button:hover {
-    background-color: #2E2E2E; }
+    background-color: #52b869; }
+  .submit-button.disabled {
+    background-color: #999999;
+    cursor: not-allowed; }
 
 .form-container-create {
-  padding-left: 20%;
-  padding-right: 20%;
   margin-bottom: 30px; }
 
 .form-container-log {
   margin-top: 30px;
+  margin-bottom: 20px;
   padding-left: 3%;
   padding-right: 3%; }
-
-.form-chunk-log .form-element {
-  min-height: 40px; }
-  .form-chunk-log .form-element .name {
-    line-height: 40px; }
-  .form-chunk-log .form-element .value {
-    height: 40px; }
-    .form-chunk-log .form-element .value input {
-      position: relative;
-      top: 8px;
-      width: 90%;
-      height: 55%;
-      border-bottom: 1px solid #dddddd; }
 
 .table-container {
   margin-top: 30px;
@@ -377,12 +341,24 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 50px; }
 
 .table-controls {
+  position: relative;
   padding: 15px; }
   .table-controls .control {
-    cursor: hand; }
+    position: absolute;
+    bottom: 10px; }
     .table-controls .control i {
       margin-left: 6px;
       margin-right: 6px; }
+    .table-controls .control.left {
+      left: 5px; }
+    .table-controls .control.right {
+      right: 5px; }
+    .table-controls .control.clickable {
+      cursor: hand; }
+
+.error-message {
+  text-align: center;
+  color: indianred; }
 
 /* FRAMEWORK - Structure and layout files.
 ========================================================================== */

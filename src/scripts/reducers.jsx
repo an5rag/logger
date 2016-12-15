@@ -83,7 +83,7 @@ const page = (currentState = {}, action) => {
     }
 };
 
-const entryForm = (currentState = {}, action) => {
+const entryForm = (currentState = { valid: false }, action) => {
     switch (action.type) {
         case 'UPDATE_ENTRY_FORM_GLOBAL':
             return Object.assign({}, currentState, {
@@ -100,8 +100,14 @@ const entryForm = (currentState = {}, action) => {
                 post: action.formData
             });
             break;
+        case 'SET_ENTRY_FORM_VALID':
+            return Object.assign({}, currentState, {
+                valid: action.valid
+            });
+            break;
         case 'CLEAR_ENTRY_FORM':
             return {
+                valid: false
             };
         default:
             return currentState;
@@ -120,9 +126,9 @@ const entries = (currentState = [], action) => {
                 currentEntry: action.entry
             });
             break;
-        case 'SET_IN_PROGRESS_ENTRIES':
+        case 'SET_ENTRIES_IN_PROGRESS':
             return Object.assign({}, currentState, {
-                inProgressEntries: action.entries
+                entriesInProgress: action.entries
             });
             break;
         default:

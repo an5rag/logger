@@ -4,6 +4,7 @@ import {Creatable} from 'react-select';
 import TimePicker from 'material-ui/TimePicker';
 import DatePicker from 'material-ui/DatePicker';
 import _ from 'lodash';
+import Chips, {Chip} from 'react-chips';
 
 const TextInput = React.createClass({
     getDefaultProps(){
@@ -52,15 +53,15 @@ const NumberInput = React.createClass({
 
 const SelectInput = React.createClass({
     handleChange(value){
-        if(value){
-          this.props.onChange(value.value);
+        if (value) {
+            this.props.onChange(value.value);
         }
         else {
-          this.props.onChange(value);
+            this.props.onChange(null);
         }
     },
     render(){
-        if(typeof this.props.value != "object") {
+        if (typeof this.props.value != "object") {
 
         }
         return (
@@ -83,6 +84,17 @@ const MultiSelectInput = React.createClass({
                 onChange={this.props.onChange}
                 multi={true}
                 placeholder={this.props.placeholder}
+            />
+        )
+    }
+});
+
+const ChipInput = React.createClass({
+    render(){
+        return (
+            <textarea
+                value={this.props.value}
+                onChange={this.props.onChange}
             />
         )
     }
@@ -152,29 +164,28 @@ const FormTable = React.createClass({
     },
     getDefaultProps(){
         return {
-            cols: 1
+            cols: 1,
+            formData: []
         }
     },
 
     componentWillReceiveProps(nextProps){
-      if(!_.isEqual(this.props.formData, nextProps.formData)){
-        this.resetState(nextProps);
-        console.log("resetting!");
-        return;
-      }
-
-      // TODO: fix for similar length forms
+        if (!_.isEqual(this.props.formData, nextProps.formData)) {
+            this.resetState(nextProps);
+            console.log("resetting!");
+            return;
+        }
     },
 
     resetState(props){
-      const formData = props.formData.map((element) => {
-          return {
-              label: element.label,
-              value: element.value
-          };
-      });
-      this.setState({
-          formData
+        const formData = props.formData.map((element) => {
+            return {
+                label: element.label,
+                value: element.value
+            };
+        });
+        this.setState({
+            formData
         });
     },
 
@@ -182,11 +193,13 @@ const FormTable = React.createClass({
         const formData = this.props.formData.map((element) => {
             return {
                 label: element.label,
-                value: element.value
+                value: element.value,
+                required: element.required
             };
         });
         return {
-            formData
+            formData,
+            valid: false
         }
     },
 
@@ -197,6 +210,7 @@ const FormTable = React.createClass({
             formData: newFormData
         }, ()=> {
             let formData = this.state.formData;
+            this.handleIncompleteness();
             if (this.props.onChange) {
                 let resultAsObject = {};
                 for (let i = 0; i < formData.length; i++) {
@@ -206,6 +220,20 @@ const FormTable = React.createClass({
             }
         });
 
+    },
+
+    handleIncompleteness(){
+        let isValid = true;
+        this.state.formData.map((element) => {
+            if(element.required && element.value == undefined || element.value == '' || element.value == null)
+                isValid = false;
+        });
+        this.setState({
+            valid: isValid
+        }, () => {
+            if(this.props.handleValidation)
+                this.props.handleValidation(this.state.valid);
+        })
     },
 
     getInputType(element, index){
@@ -228,6 +256,12 @@ const FormTable = React.createClass({
                     value={value}
                     onChange={onChange}
                 />);
+            case 'chip-input':
+                return (<ChipInput
+                    placeholder={element.placeholder}
+                    value={value}
+                    onChange={onChange}
+                />);
             case 'select':
                 return (<SelectInput
                     value={value}
@@ -244,7 +278,7 @@ const FormTable = React.createClass({
                 />);
             case 'creatable':
                 return (<Creatable
-                    value={this.state.formData[index].value}
+                    value={value}
                     onChange={this.onChange.bind(this, index)}
                     options={element.options}
                     multi={element.multi}
@@ -267,26 +301,35 @@ const FormTable = React.createClass({
         }
 
     },
+
+    componentDidMount(){
+        this.handleIncompleteness();
+    },
+
     render() {
-        const cols = (12 / this.props.cols).toFixed(0);
-        const colsClass = 'col s' + cols.toString();
-        const elementClass = 'row ' + colsClass + " form-table-element";
         const formElements = this.props.formData.map((element, index)=> {
+            let label = element ? element.label : null;
+            if (element.required){
+                label+=' *';
+            }
             return (
-                <div className={elementClass} key={index}>
-                    <div className="col s6 form-label">{element ? element.label : null}</div>
-                    <div className="col s6 form-input">
+                <tr key={index}>
+                    <td className="form-label">{label}</td>
+                    <td className="">
                         {this.getInputType(element, index)}
-                    </div>
-                </div>
+                    </td>
+                </tr>
             )
-
         });
-        return (
-            <div className="row form-table">
-                {formElements}
-            </div>
 
+        return (
+            <div className="form-table">
+                <table>
+                    <tbody>
+                    {formElements}
+                    </tbody>
+                </table>
+            </div>
         )
     }
 });
@@ -304,6 +347,12 @@ const FormTableTest = () =>(
                 label: 'Time Input',
                 type: 'time',
                 placeholder: 'Enter time',
+            }, {
+                label: 'Chip Input',
+                type: 'chip-input',
+                placeholder: 'Enter options',
+                value: ['what', 'is'],
+                suggestions: ['you', 'are', 'a', 'hoe']
             }, {
                 label: 'Date Input',
                 type: 'date',
