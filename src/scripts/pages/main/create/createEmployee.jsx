@@ -61,6 +61,7 @@ const CreateEmployee = React.createClass({
                     </div>
                     <FormTable
                         onChange={this.onChange}
+                        startCase={true}
                         formData={[
                             {
                                 label: 'firstName',
@@ -97,7 +98,7 @@ const CreateEmployee = React.createClass({
                     />
 
                 </div>
-                <div className="submit-button hover-green col s10 offset-s1 m8 offset-m2" onClick={this.onSubmit}>Create</div>
+                <div className="submit-button hover-green col s8 offset-s2 m6 offset-m3" onClick={this.onSubmit}>Create</div>
                     <Snackbar
                               open={this.state.snackBarOpen}
                               message={this.state.snackBarMessage}

@@ -1,10 +1,10 @@
 /* BASE - Base Variable file along with starting point Mixins and Placeholders.
 ========================================================================== */
-.navbar-top .button-links, .search-box, .login-box, .default-message, .form .add-box, .table-controls {
+.navbar-top .button-links, .search-box, .login-box, .default-message, .form .add-box, .table-controls, .dashboard-text {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300; }
 
-.bb-table, .navbar-top .title .subtitle, .navbar-top .side-links, .navbar-bottom .navbar-buttons, .navbar-bottom .navbar-buttons:hover, .select-list-element, .time-picker, .form-table table, .form-table td, .form-table th, .form .title, .submit-button, .error-message {
+.bb-table, .navbar-top .title .subtitle, .navbar-top .side-links, .navbar-bottom .navbar-buttons, .navbar-bottom .navbar-buttons:hover, .select-list-element, .time-picker, .form-table table, .form-table td, .form-table th, .form .title, .submit-button, .error-message, .dashboard-title {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 400; }
 
@@ -16,7 +16,7 @@
   font-size: 15px;
   line-height: 17px; }
 
-.navbar-top .button-links, .navbar-bottom .navbar-buttons, .time-picker, .form-table table, .form-table td, .form-table th, .form .add-box, .submit-button {
+.navbar-top .button-links, .navbar-bottom .navbar-buttons, .time-picker, .form-table table, .form-table td, .form-table th, .form .add-box, .submit-button, .dashboard-text {
   font-size: 17px;
   line-height: 20px; }
 
@@ -28,7 +28,7 @@
   font-size: 25px;
   line-height: 32px; }
 
-.navbar-top .title, .form .title {
+.navbar-top .title, .form .title, .dashboard-title {
   font-size: 33px;
   line-height: 38px; }
 
@@ -72,6 +72,8 @@
     font-family: "Work Sans", sans-serif;
     color: black;
     line-height: 70px; }
+    .navbar-top .title .maintitle {
+      cursor: hand; }
     .navbar-top .title .subtitle {
       color: #2E2E2E;
       font-family: "Source Sans Pro", sans-serif; }
@@ -80,6 +82,8 @@
     color: #52b869; }
     .navbar-top .side-links:hover {
       color: #008949; }
+  .navbar-top .username {
+    cursor: hand; }
   .navbar-top .button-links {
     color: #999999; }
     .navbar-top .button-links:hover {
@@ -368,6 +372,15 @@ h1, h2, h3, h4, h5 {
 .error-message {
   text-align: center;
   color: indianred; }
+
+.dashboard-text {
+  text-align: center;
+  margin: 15px;
+  line-height: 2rem; }
+
+.dashboard-title {
+  margin: 20px;
+  font-size: 38px; }
 
 /* FRAMEWORK - Structure and layout files.
 ========================================================================== */

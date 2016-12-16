@@ -36,6 +36,7 @@
     "react": "^15.3.2",
     "react-chips": "^0.3.0",
     "react-dom": "^15.3.2",
+    "react-file-download": "^0.3.2",
     "react-redux": "^4.4.6",
     "react-router": "^3.0.0",
     "react-select": "^1.0.0-rc.2",

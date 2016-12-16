@@ -1,0 +1,15 @@
+
+.dashboard-text {
+  text-align: center;
+  margin: 15px;
+  line-height: 2rem;
+  @extend %small-font;
+  @extend %light-font;
+}
+
+.dashboard-title {
+    @extend %extra-large-font;
+    @extend %regular-font;
+    margin: 20px;
+    font-size: 38px;
+}

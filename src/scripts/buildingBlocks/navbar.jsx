@@ -31,7 +31,7 @@ const NavBar = React.createClass({
                 <div className="row navbar-top ">
                     <div className="col s12 m6 l5 title">
                         <UISref to={'main.dashboard'}>
-                            <span>{this.props.title}</span>
+                            <span className="maintitle">{this.props.title}</span>
                         </UISref>
                         <span className="subtitle"> | {this.props.subtitle}</span>
                     </div>

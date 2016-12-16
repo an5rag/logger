@@ -1,4 +1,5 @@
 const axios = require('axios');
+const fileDownload = require('react-file-download');
 // const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
 const API_ADDRESS = "http://localhost:4000/api";
 
@@ -481,6 +482,29 @@ export const fetchCurrentEntry = (id) => {
 
     };
 
+};
+
+export const fetchCsv = (req) => {
+    return (dispatch, getState) => {
+        const {lines} = getState();
+
+        if (!lines.currentLine) {
+            return dispatch(null);
+        }
+
+        const query = {
+            lineId: lines.currentLine._id,
+            ...req
+        };
+
+        axios.get(API_ADDRESS + '/entry/export', {
+            params: query
+        })
+            .then((response)=> {
+                fileDownload(response.data, 'export.csv');
+            }, (err) => {})
+        return Promise.resolve();
+    };
 };
 
 const setCurrentEntry = (entry) => {

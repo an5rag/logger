@@ -15,6 +15,9 @@
     font-family: $title-font;
     color: $title-color;
     line-height: $nav-bar-height;
+    .maintitle{
+        cursor: hand;
+    }
     .subtitle {
       @extend %regular-font;
       color: $subtitle-color;
@@ -31,6 +34,9 @@
     &:hover {
       color: $nav-link-color-dark;
     }
+  }
+  .username {
+      cursor: hand;
   }
   .button-links {
     @extend %light-font;
