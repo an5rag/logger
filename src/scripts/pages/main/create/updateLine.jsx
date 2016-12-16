@@ -102,6 +102,14 @@ const UpdateLine = React.createClass({
     },
 
     render() {
+        if (!this.props.currentLine) {
+            return (
+                <div className="default-message">
+                    Select a line from the search bar to update.
+                </div>
+            )
+        }
+
         const constraints = [];
         for (let i = 0; i < this.state.constraints; i++) {
             let constraintName = `Constraint ${i+1}`;
@@ -116,6 +124,7 @@ const UpdateLine = React.createClass({
                     </div>
                     <FormTable
                         onChange={this.onChange.bind(this, i)}
+                        startCase={true}
                         formData={[
                             {
                                 label: 'name',

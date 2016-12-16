@@ -182,13 +182,15 @@ const FormTable = React.createClass({
         formData: React.PropTypes.array,
         cols: React.PropTypes.number,
         onSubmit: React.PropTypes.func,
-        onChange: React.PropTypes.func
+        onChange: React.PropTypes.func,
+        startCase: React.PropTypes.bool
     },
 
     getDefaultProps(){
         return {
             cols: 1,
-            formData: []
+            formData: [],
+            startCase: false
         }
     },
 
@@ -337,7 +339,7 @@ const FormTable = React.createClass({
 
     render() {
         const formElements = this.props.formData.map((element, index)=> {
-            let label = element ? _.startCase(element.label) : null;
+            let label = element ? (this.props.startCase? _.startCase(element.label) : element.label) : null;
             if (element.required) {
                 label += ' *';
             }
