@@ -59,7 +59,7 @@ const Main = React.createClass({
         ];
 
         if (this.props.user.userType == 'ADMIN'){
-            navs.push({text: 'Create and Manage', destination: 'main.create'});
+            navs.push({text: 'Create and Manage', destination: 'main.manage.options'});
         }
 
         return (

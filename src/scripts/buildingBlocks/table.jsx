@@ -19,7 +19,6 @@ const Table = React.createClass({
 
     handleRowClick(rowId, event){
         this.props.onRowClick(rowId);
-
     },
 
     render() {

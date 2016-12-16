@@ -27,7 +27,7 @@ const user = (currentState = {}, action) => {
     }
 };
 
-const lines = (currentState = [], action) => {
+const lines = (currentState = {}, action) => {
     switch (action.type) {
         case 'SET_LINES':
             return Object.assign({}, currentState, {
@@ -114,7 +114,7 @@ const entryForm = (currentState = { valid: false }, action) => {
     }
 };
 
-const entries = (currentState = [], action) => {
+const entries = (currentState = {}, action) => {
     switch (action.type) {
         case 'SET_ENTRIES':
             return Object.assign({}, currentState, {
@@ -129,6 +129,12 @@ const entries = (currentState = [], action) => {
         case 'SET_ENTRIES_IN_PROGRESS':
             return Object.assign({}, currentState, {
                 entriesInProgress: action.entries
+            });
+            break;
+        case 'CLEAR_ALL_ENTRIES':
+            return Object.assign({}, currentState, {
+                allEntries: {},
+                entriesInProgress: {}
             });
             break;
         default:

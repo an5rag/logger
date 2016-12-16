@@ -55,7 +55,13 @@
   color: whitesmoke;
 
   &:hover {
-    background-color: $lightGreen;
+    background-color: $darkGray;
+    &.hover-green{
+      background-color: $lightGreen;
+    }
+    &.hover-red{
+      background-color: indianred;
+    }
     //color: white;
     //border: 1px solid grey;
 

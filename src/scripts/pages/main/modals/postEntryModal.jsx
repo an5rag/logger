@@ -13,19 +13,16 @@ const PostEntryModal = React.createClass({
         const actions = [
             <RaisedButton
                 label="Update"
-                primary={true}
                 onTouchTap={this.props.submitPostEntryForm}
                 disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
             />,
           <RaisedButton
                 label="Update and Clock out"
-                primary={true}
                 onTouchTap={this.props.submitPostEntryFormAndClockOut}
                 disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
             />,
             <RaisedButton
                 label="Cancel"
-                secondary={true}
                 onTouchTap={this.props.closePostEntryModal}
             />,
         ];
@@ -69,14 +66,14 @@ const PostEntryModal = React.createClass({
                 onChange={this.props.updateEntryFormPost}
             />
         );
-        
+
         const entryClockedOut = (
             <div className="modal-message red-text">
                 <br/>
                 This entry has already been clocked out.
             </div>
         );
-        
+
         let modalForm;
         if(this.props.entries.currentEntry && this.props.entries.currentEntry.inProgress){
             modalForm = postEntryForm

@@ -32,6 +32,7 @@ export const SET_ENTRY_FORM_VALID = 'SET_ENTRY_FORM_VALID';
 const SET_ENTRIES = 'SET_ENTRIES';
 const SET_ENTRIES_IN_PROGRESS = 'SET_ENTRIES_IN_PROGRESS';
 const SET_CURRENT_ENTRY = 'SET_CURRENT_ENTRY';
+const CLEAR_ALL_ENTRIES= 'CLEAR_ALL_ENTRIES';
 
 // MODALS
 const OPEN_POST_ENTRY_MODAL = 'OPEN_POST_ENTRY_MODAL';
@@ -104,7 +105,24 @@ export const login = (username, password) => {
         request.then(
             response => dispatch(setUser(response.data.token, response.data.name, response.data.username, response.data.userType)),
         )
+    }
+};
+// --------------------------------------------------------- EMPLOYEE
 
+export const createEmployee = (req, callback) => {
+    return (dispatch) => {
+        // dispatch(pageLoading());
+        axios.post(API_ADDRESS + '/user/register', req)
+            .then(function (response) {
+                if(callback)
+                    callback(response, null);
+                dispatch(pageLoaded());
+            })
+            .catch(function (error) {
+                callback(null, error.response.data);
+                // dispatch(pageLoaded());
+
+            });
     }
 };
 
@@ -115,7 +133,7 @@ export const fetchLines = () => {
 
     return (dispatch, getState) => {
         dispatch(pageLoading());
-        const {user} = getState();
+        const { user } = getState();
         const config = {
             params: {'token': user.token}
         };
@@ -130,9 +148,7 @@ export const fetchLines = () => {
             })
             .then(()=> {
                 dispatch(pageLoaded());
-            })
-        ;
-
+            });
     };
 
 };
@@ -142,7 +158,6 @@ export const setCurrentLine = (line) => {
         type: SET_CURRENT_LINE,
         line
     }
-
 };
 
 const setLines = (lines) => {
@@ -150,7 +165,6 @@ const setLines = (lines) => {
         type: SET_LINES,
         lines
     }
-
 };
 
 export const changeLine = (line) => {
@@ -164,6 +178,42 @@ export const changeLine = (line) => {
 export const createLine = (req) => {
     return (dispatch) => {
         axios.post(API_ADDRESS + '/line', req)
+            .then(function (response) {
+                dispatch(setCurrentLine(response.data.line));
+                dispatch(fetchLines());
+                dispatch(clearEntryForm());
+                dispatch(fetchAllEntries());
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+};
+
+export const deleteLine = () => {
+    return (dispatch, getState) => {
+        const {lines} = getState();
+        const id = lines.currentLine._id;
+        axios.delete(API_ADDRESS + '/line' +`/${id}`)
+            .then(function (response) {
+                dispatch(setCurrentLine(null));
+                dispatch(fetchLines());
+                dispatch(clearEntryForm());
+                dispatch(clearAllEntries());
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+};
+
+export const updateLine = (req) => {
+    return (dispatch, getState) => {
+        const {lines} = getState();
+        const id = lines.currentLine._id;
+        req = {...req, id};
+        console.log("coming here");
+        axios.put(API_ADDRESS + '/line', req)
             .then(function (response) {
                 dispatch(setCurrentLine(response.data.line));
                 dispatch(fetchLines());
@@ -239,8 +289,8 @@ export const submitEntryForm = () => {
             lineId: lines.currentLine._id,
             lineName: lines.currentLine.name,
             constraints,
-            creator: user.username,
-            createdOn: new Date()
+            'Employee Clock In': user.username,
+            'System Clock In': new Date()
         };
 
         axios.post(API_ADDRESS + '/entry', entry)
@@ -269,8 +319,8 @@ export const submitPostEntryForm = (clockOut) => {
         };
 
         if (clockOut) {
-            entry['Employee Clock-out'] = user.username;
-            entry['System Clock-out'] = new Date();
+            entry['Employee Clock Out'] = user.username;
+            entry['System Clock Out'] = new Date();
             entry['inProgress'] = false;
         }
 
@@ -299,9 +349,9 @@ const formatEntries = (response, line) => {
     const entries = response.data.entries;
     const tableColumns = [];
     tableColumns.push(
-        'createdOn',
-        'creator',
-        'System Clock-out',
+        'System Clock In',
+        'Employee Clock In',
+        'System Clock Out',
     );
 
 
@@ -444,6 +494,12 @@ const setEntries = (entries) => {
     return {
         type: SET_ENTRIES,
         entries
+    }
+};
+
+const clearAllEntries = () => {
+    return {
+        type: CLEAR_ALL_ENTRIES
     }
 };
 

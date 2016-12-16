@@ -1,16 +1,54 @@
 import React from 'react';
-import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
-import {createLine} from '../../../actions';
+import {FormTable} from 'buildingBlocks/formTable';
+import {SearchBox} from 'buildingBlocks/searchBox';
 import {connect} from 'react-redux';
+import _ from 'lodash';
+import {updateLine, deleteLine} from '../../../actions';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 
 const UpdateLine = React.createClass({
 
     getInitialState(){
+        let basicFormData = {};
+        let constraintsFormData = [{}];
+
+        const currentLine = this.props.currentLine;
+        if(currentLine){
+            basicFormData = {
+                name: currentLine.name,
+                description: currentLine.description
+            }
+            constraintsFormData = currentLine.constraints
+        }
+
         return {
-            constraints: 1,
-            basicFormData: {},
-            constraintsFormData: []
+            constraints: constraintsFormData.length,
+            basicFormData,
+            constraintsFormData,
+            deleteAlert: false
+        }
+    },
+
+    componentWillReceiveProps(nextProps){
+        if (!_.isEqual(this.props.currentLine, nextProps.currentLine)) {
+            const currentLine = nextProps.currentLine;
+            let basicFormData = {};
+            let constraintsFormData = [{}];
+            if(currentLine){
+                basicFormData = {
+                    name: currentLine.name,
+                    description: currentLine.description
+                }
+                constraintsFormData = currentLine.constraints
+            }
+
+            this.setState({
+                constraints: constraintsFormData.length,
+                basicFormData,
+                constraintsFormData
+            });
         }
     },
 
@@ -25,66 +63,68 @@ const UpdateLine = React.createClass({
 
     },
 
-    onSubmit(){
+    onUpdate(){
         const basicForm = this.state.basicFormData;
         const req = {
-            name: basicForm[0].value,
-            description: basicForm[1].value
+            ...basicForm,
+            constraints: this.state.constraintsFormData
         };
-        req.constraints = this.state.constraintsFormData.map((formData)=> {
-            const toReturn = {
-                name: formData[0].value,
-                class: formData[1].value,
-                type: formData[2].value,
-                isDisplayed: formData[4].value
-            };
-            if (toReturn.type == 'select' && formData[3].value) {
-                const categories = formData[3].value;
-                toReturn.categories = categories;
-            }
-            return toReturn;
-        });
-        req.creator = this.props.user.username;
         console.log(req);
 
-        req.token = this.props.user.token;
-
-        this.props.createLine(req);
+        this.props.updateLine(req);
         this.props.transition.router.stateService.go('main.log');
     },
 
-    onChange(index, value){
+    onDelete(){
+        this.props.deleteLine();
+    },
+
+    onChange(index, value, formAsObject){
         const constraintsFormData = this.state.constraintsFormData.slice();
-        constraintsFormData[index] = value;
+        constraintsFormData[index] = formAsObject;
         this.setState({
             constraintsFormData
         });
     },
 
-    onBasicFormChange(value){
+    onBasicFormChange(value, formAsObject){
         this.setState({
-            basicFormData: value
+            basicFormData: formAsObject
         });
     },
 
-    render() {
+    deleteAlertOpen(){
+        this.setState({deleteAlert: true});
+    },
 
+    deleteAlertClose(){
+        this.setState({deleteAlert: false});
+    },
+
+    render() {
         const constraints = [];
         for (let i = 0; i < this.state.constraints; i++) {
+            let constraintName = `Constraint ${i+1}`;
+            if(this.state.constraintsFormData[i]['name'])
+                constraintName = this.state.constraintsFormData[i]['name'];
+
+            const c = this.state.constraintsFormData[i];
             constraints.push(
                 <div key={i}>
                     <div className="subtitle">
-                        Constraint {i + 1}
+                        {constraintName}
                     </div>
                     <FormTable
                         onChange={this.onChange.bind(this, i)}
                         formData={[
                             {
-                                label: 'Name',
+                                label: 'name',
                                 type: 'text',
-                                required: true
+                                required: true,
+                                value: c['name']
                             }, {
-                                label: 'Class',
+                                label: 'class',
+                                value: c['class'],
                                 type: 'select',
                                 placeholder: 'Select',
                                 multi: false,
@@ -102,7 +142,8 @@ const UpdateLine = React.createClass({
                                     }
                                 ]
                             }, {
-                                label: 'Type',
+                                label: 'type',
+                                value: c['type'],
                                 type: 'select',
                                 placeholder: 'Select',
                                 multi: false,
@@ -126,12 +167,14 @@ const UpdateLine = React.createClass({
                                     }
                                 ]
                             }, {
-                                label: 'Categories',
+                                label: 'categories',
+                                value: c['categories'] ? c['categories'] : [],
                                 type: 'options-input',
                                 placeholder: 'if type is category',
                                 multi: true
                             }, {
-                                label: 'Displayed in Table',
+                                label: 'isDisplayed',
+                                value: c['isDisplayed'],
                                 type: 'select',
                                 multi: false,
                                 value:true,
@@ -151,7 +194,18 @@ const UpdateLine = React.createClass({
 
                 </div>
             )
-        }
+        };
+
+        const deleteAlertActions = [
+          <FlatButton
+            label="Delete Line"
+            onTouchTap={this.onDelete}
+          />,
+          <FlatButton
+            label="Cancel"
+            onTouchTap={this.deleteAlertClose}
+          />,
+        ];
 
         return (
             <div className="form-container-create row">
@@ -166,11 +220,13 @@ const UpdateLine = React.createClass({
                         onChange={this.onBasicFormChange}
                         formData={[
                             {
-                                label: 'Name',
+                                label: 'name',
                                 type: 'text',
+                                value: this.state.basicFormData.name
                             }, {
-                                label: 'Description',
-                                type: 'text'
+                                label: 'description',
+                                type: 'text',
+                                value: this.state.basicFormData.description
                             }
                         ]}
                         cols={1}
@@ -184,7 +240,17 @@ const UpdateLine = React.createClass({
                     </div>
 
                 </div>
-                <div className="submit-button col s10 offset-s1 m8 offset-m2" onClick={this.onSubmit}>Create</div>
+                <div className="col s10 offset-s1 m8 offset-m2">
+                    <div className="submit-button hover-green col s5 offset-s1" onClick={this.onUpdate}>Update</div>
+                    <div className="submit-button hover-red col s5" onClick={this.deleteAlertOpen}>Delete</div>
+                </div>
+                <Dialog
+                          actions={deleteAlertActions}
+                          open={this.state.deleteAlert}
+                          onRequestClose={this.deleteAlertClose}
+                >
+                          Delete Line and all its associated Entries? (this change is permanent)
+                </Dialog>
             </div>
 
         );
@@ -195,14 +261,17 @@ const UpdateLine = React.createClass({
 function mapStateToProps(state) {
     return {
         user: state.user,
-        lines: state.lines
+        currentLine: state.lines.currentLine
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        createLine: (req) => {
-            dispatch(createLine(req));
+        updateLine: (req) => {
+            dispatch(updateLine(req));
+        },
+        deleteLine: (req) => {
+            dispatch(deleteLine(req));
         }
     }
 }

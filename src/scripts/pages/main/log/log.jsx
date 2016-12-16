@@ -79,7 +79,7 @@ const Log = React.createClass({
 
         }
 
-        const submitButtonClasses = this.props.valid ? 'submit-button' : 'submit-button disabled';
+        const submitButtonClasses = this.props.valid ? 'submit-button hover-green' : 'submit-button disabled';
         const message = this.props.valid ? null : (
             <div className="error-message">All fields marked with * are required.</div>);
         return (

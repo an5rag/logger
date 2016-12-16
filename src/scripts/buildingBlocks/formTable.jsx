@@ -106,7 +106,7 @@ const OptionsInput = React.createClass({
 
     render(){
 
-        let value;
+        let value = '';
         if(this.props.value.length >0){
             value = this.props.value.reduce((value, current) => value.concat(',' + current));
         }
@@ -167,7 +167,6 @@ const DateInput = React.createClass({
             date = new Date(date);
         return (
             <DatePicker
-                autoOk={true}
                 value={date}
                 className="time-picker"
                 placeholder={this.props.placeholder}
@@ -185,6 +184,7 @@ const FormTable = React.createClass({
         onSubmit: React.PropTypes.func,
         onChange: React.PropTypes.func
     },
+
     getDefaultProps(){
         return {
             cols: 1,
@@ -192,10 +192,15 @@ const FormTable = React.createClass({
         }
     },
 
+    getInitialState(){
+      return{
+        valid: false
+      }
+    },
+
     componentWillReceiveProps(nextProps){
         if (!_.isEqual(this.props.formData, nextProps.formData)) {
             this.resetState(nextProps);
-            console.log("resetting!");
             return;
         }
     },
@@ -233,7 +238,8 @@ const FormTable = React.createClass({
             formData: newFormData
         }, ()=> {
             let formData = this.state.formData;
-            this.handleIncompleteness();
+            if (this.props.handleValidation)
+              this.handleIncompleteness();
             if (this.props.onChange) {
                 let resultAsObject = {};
                 for (let i = 0; i < formData.length; i++) {
@@ -248,7 +254,7 @@ const FormTable = React.createClass({
     handleIncompleteness(){
         let isValid = true;
         this.state.formData.map((element) => {
-            if (element.required && element.value == undefined || element.value == '' || element.value == null)
+            if (element.required && element.value == undefined || element.required && element.value == '' || element.required && element.value == null)
                 isValid = false;
         });
         this.setState({
@@ -331,7 +337,7 @@ const FormTable = React.createClass({
 
     render() {
         const formElements = this.props.formData.map((element, index)=> {
-            let label = element ? element.label : null;
+            let label = element ? _.startCase(element.label) : null;
             if (element.required) {
                 label += ' *';
             }
@@ -363,6 +369,7 @@ const FormTableTest = () =>(
             {
                 label: 'Text Input',
                 type: 'text',
+                required: true
             }, {
                 label: 'Number Input',
                 type: 'number'

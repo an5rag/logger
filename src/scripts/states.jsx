@@ -4,7 +4,10 @@ import JobsInProgress from './pages/main/jobsinProgress/jobsInProgress'
 import Main from './pages/main/main';
 import Login from './pages/login/login';
 import UpdateLine from './pages/main/create/updateLine';
+import CreateLine from './pages/main/create/createLine';
 import CreateEmployee from './pages/main/create/createEmployee';
+import CreateAndManage from './pages/main/create/createAndManage';
+import Options from './pages/main/create/options';
 
 //building blocks
 import {NavBarTest} from './buildingBlocks/navbar';
@@ -38,13 +41,26 @@ const states = [
         url: '/:lineId',
         component: Log,
     }, {
-        name: 'main.create',
-        url: '/create',
-        component: UpdateLine
-    }, {
-        name: 'main.employee',
-        url: '/employee',
+        name: 'main.manage',
+        url: '/manage',
+        component: CreateAndManage,
+        abstract: true,
+    },{
+        name: 'main.manage.options',
+        url: '/options',
+        component: Options,
+    },{
+        name: 'main.manage.createEmployee',
+        url: '/createemployee',
         component: CreateEmployee
+    },{
+        name: 'main.manage.updateLine',
+        url: '/updateline',
+        component: UpdateLine
+    },{
+        name: 'main.manage.createLine',
+        url: '/createline',
+        component: CreateLine
     },{
         name: 'main.jobsInProgress',
         url: '/jobsinprogress',

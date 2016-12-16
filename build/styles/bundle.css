@@ -324,7 +324,11 @@ h1, h2, h3, h4, h5 {
   background-color: black;
   color: whitesmoke; }
   .submit-button:hover {
-    background-color: #52b869; }
+    background-color: #454545; }
+    .submit-button:hover.hover-green {
+      background-color: #52b869; }
+    .submit-button:hover.hover-red {
+      background-color: indianred; }
   .submit-button.disabled {
     background-color: #999999;
     cursor: not-allowed; }

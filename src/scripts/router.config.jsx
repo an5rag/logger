@@ -12,5 +12,5 @@ states.forEach(state => router.stateRegistry.register(state));
 // Start the router
 router.start();
 
-// Setup the state visualizer - comment out for production!
-// visualizer(router);
+//Setup the state visualizer - comment out for production!
+//visualizer(router);
