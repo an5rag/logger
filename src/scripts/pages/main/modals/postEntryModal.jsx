@@ -3,7 +3,7 @@ import {openPostEntryModal, closePostEntryModal, submitPostEntryForm, updateEntr
 import {connect} from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
 import LinearProgress from 'material-ui/LinearProgress';
 
@@ -11,17 +11,17 @@ const PostEntryModal = React.createClass({
 
     render() {
         const actions = [
-            <RaisedButton
+            <FlatButton
                 label="Update"
                 onTouchTap={this.props.submitPostEntryForm}
                 disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
             />,
-          <RaisedButton
+          <FlatButton
                 label="Update and Clock out"
                 onTouchTap={this.props.submitPostEntryFormAndClockOut}
                 disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
             />,
-            <RaisedButton
+            <FlatButton
                 label="Cancel"
                 onTouchTap={this.props.closePostEntryModal}
             />,

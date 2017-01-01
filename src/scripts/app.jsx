@@ -7,13 +7,15 @@ import {UIView} from 'ui-router-react';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger'
 
-const loggerMiddleware = createLogger();
+//const loggerMiddleware = createLogger();
+
+import ErrorModal from './pages/main/modals/errorModal';
 
 const store = createStore(
     RootReducer,
     applyMiddleware(
         thunkMiddleware,
-        loggerMiddleware
+        // loggerMiddleware
     )
 );
 

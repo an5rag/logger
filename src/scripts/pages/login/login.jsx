@@ -1,8 +1,10 @@
 import React from 'react';
 import {LoginBox} from 'buildingBlocks/loginBox';
+import CircularProgress from 'material-ui/CircularProgress';
 import {login} from '../../actions';
 import {connect} from 'react-redux';
 
+import ErrorModal from '../main/modals/errorModal';
 
 
 const Login = React.createClass({
@@ -30,14 +32,20 @@ const Login = React.createClass({
             this.props.transition.router.stateService.go('main.dashboard');
         }
 
+        const loginBox = (<LoginBox onSubmit={this.onSubmit}/>);
+        const loading = (
+            <div className="default-message">
+                <CircularProgress size={40} thickness={3} color="indianred"/>
+            </div>
+        );
+
         return (
             <div>
+                <ErrorModal/>
                 <div className="fullScreenBox">
                     <div className="topLinks">
                         <ul>
-                            <li>Why loggr?</li>
                             <li>How does it work?</li>
-                            <li>Contribute</li>
                         </ul>
                     </div>
                     <div className="welcomeBox">
@@ -50,7 +58,7 @@ const Login = React.createClass({
                                 LOGGR FOR BUSINESS
                             </div>
                         </div>
-                        <LoginBox onSubmit={this.onSubmit}/>
+                        {this.props.user.isLogging? loading : loginBox}
                     </div>
                     <div className="bottomLinks">
                         © Anurag Choudhary 2016

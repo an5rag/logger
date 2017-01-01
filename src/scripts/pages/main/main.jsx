@@ -10,7 +10,9 @@ import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
 import LinearProgress from 'material-ui/LinearProgress';
 
 //modals
-import PostEntryModal from './modals/postEntryModal'
+import PostEntryModal from './modals/postEntryModal';
+import ErrorModal from './modals/errorModal';
+
 
 const Main = React.createClass({
 
@@ -45,7 +47,7 @@ const Main = React.createClass({
         if (this.props.page.isLoading) {
             view = (
                 <div className="default-message">
-                    <CircularProgress size={80} thickness={5}/>
+                    <CircularProgress size={80} thickness={5} color="indianred"/>
                 </div>
             )
         } else {
@@ -70,6 +72,7 @@ const Main = React.createClass({
                         searchBoxPlaceholder="Search"
                 />
                 <PostEntryModal/>
+                <ErrorModal/>
                 {view}
             </div>
         );

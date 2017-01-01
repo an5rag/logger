@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fileDownload = require('react-file-download');
 const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
-// const API_ADDRESS = "http://localhost:4000/api";
+//const API_ADDRESS = "http://localhost:4000/api";
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
@@ -13,6 +13,8 @@ export const ENTRIES_LOADED = 'ENTRIES_LOADED';
 export const SET_USER = 'SET_USER';
 export const LOGOUT = 'LOGOUT';
 export const LOGGING = 'LOGGING';
+export const NOT_LOGGING = 'NOT_LOGGING';
+
 
 // LINE ACTIONS
 export const SET_LINES = 'SET_LINES';
@@ -40,6 +42,8 @@ const OPEN_POST_ENTRY_MODAL = 'OPEN_POST_ENTRY_MODAL';
 const CLOSE_POST_ENTRY_MODAL = 'CLOSE_POST_ENTRY_MODAL';
 export const MODAL_LOADING = 'MODAL_LOADING';
 export const MODAL_LOADED = 'MODAL_LOADED';
+export const OPEN_ERROR_MODAL = 'OPEN_ERROR_MODAL';
+export const CLOSE_ERROR_MODAL = 'CLOSE_ERROR_MODAL';
 
 
 // ---------------------------------------------------------  PAGE
@@ -80,11 +84,32 @@ const modalLoaded = ()=> {
     };
 };
 
+export const openErrorModal = (title, message, serverError) => {
+    return {
+        type: OPEN_ERROR_MODAL,
+        message,
+        title,
+        serverError
+    };
+}
+
+export const closeErrorModal = () => {
+    return {
+        type: CLOSE_ERROR_MODAL
+    };
+}
+
 // ---------------------------------------------------------  USER
 
 const logging = ()=> {
     return {
         type: LOGGING
+    };
+};
+
+const notLogging = ()=> {
+    return {
+        type: NOT_LOGGING
     };
 };
 
@@ -104,7 +129,22 @@ export const login = (username, password) => {
     return (dispatch) => {
         dispatch(logging());
         request.then(
-            response => dispatch(setUser(response.data.token, response.data.name, response.data.username, response.data.userType)),
+            response => {
+                dispatch(setUser(response.data.token, response.data.name, response.data.username, response.data.userType))
+                dispatch(notLogging());
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(notLogging());
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(notLogging());
+                    dispatch(openErrorModal( 'Login Error','Invalid Username or Password.'));
+                }
+            }
         )
     }
 };
@@ -112,18 +152,25 @@ export const login = (username, password) => {
 
 export const createEmployee = (req, callback) => {
     return (dispatch) => {
-        // dispatch(pageLoading());
         axios.post(API_ADDRESS + '/user/register', req)
-            .then(function (response) {
-                if(callback)
-                    callback(response, null);
-                dispatch(pageLoaded());
-            })
-            .catch(function (error) {
-                callback(null, error.response.data);
-                // dispatch(pageLoaded());
-
-            });
+            .then(
+                function (response) {
+                    if(callback)
+                        callback(response, null);
+                },
+                error => {
+                    let e = {...error};
+                    console.log(e);
+                    if(e.response == undefined){
+                        dispatch(openErrorModal('Network Error', '',true));
+                        callback(null, error.response.data);
+                    }
+                    else{
+                        dispatch(openErrorModal( 'Error Creating Employee',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                        callback(null, error.response.data);
+                    }
+                }
+            )
     }
 };
 
@@ -145,7 +192,15 @@ export const fetchLines = () => {
             .then((response)=> {
                 dispatch(setLines(response.data.lines));
             }, (err) => {
-
+                dispatch(pageLoaded());
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error while Fetching Lines', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Fetching Lines',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
             })
             .then(()=> {
                 dispatch(pageLoaded());
@@ -184,10 +239,18 @@ export const createLine = (req) => {
                 dispatch(fetchLines());
                 dispatch(clearEntryForm());
                 dispatch(fetchAllEntries());
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Creating Line',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
     }
 };
 
@@ -201,10 +264,18 @@ export const deleteLine = () => {
                 dispatch(fetchLines());
                 dispatch(clearEntryForm());
                 dispatch(clearAllEntries());
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Deleting Line',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        );
     }
 };
 
@@ -220,10 +291,18 @@ export const updateLine = (req) => {
                 dispatch(fetchLines());
                 dispatch(clearEntryForm());
                 dispatch(fetchAllEntries());
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Updating Line',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
     }
 };
 
@@ -297,9 +376,18 @@ export const submitEntryForm = () => {
         axios.post(API_ADDRESS + '/entry', entry)
             .then((response)=> {
                 dispatch(clearEntryForm());
-            }, (err) => {
-
-            })
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Creating Entry',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
             .then(()=> {
                 dispatch(pageLoaded());
                 dispatch(fetchAllEntries());
@@ -328,9 +416,18 @@ export const submitPostEntryForm = (clockOut) => {
         axios.put(API_ADDRESS + '/entry/?id=' + currentEntryId, entry)
             .then((response)=> {
                 dispatch(clearEntryForm());
-            }, (err) => {
-
-            })
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Creating Line',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
             .then(()=> {
                 dispatch(modalLoaded());
                 dispatch(closePostEntryModal());
@@ -414,9 +511,18 @@ export const fetchEntries = () => {
             .then((response)=> {
                 const result = formatEntries(response, lines.currentLine);
                 dispatch(setEntries(result));
-            }, (err) => {
-
-            })
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Fetching Entries',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
             .then(()=> {
                 dispatch(entriesLoaded());
             });
@@ -445,9 +551,18 @@ export const fetchEntriesInProgress = () => {
             .then((response)=> {
                 const result = formatEntries(response, lines.currentLine);
                 dispatch(setEntriesInProgress(result));
-            }, (err) => {
-
-            })
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Fetching Entries in Progress',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
             .then(()=> {
                 dispatch(entriesLoaded());
             });
@@ -489,7 +604,8 @@ export const fetchCsv = (req) => {
         const {lines} = getState();
 
         if (!lines.currentLine) {
-            return dispatch(null);
+            return dispatch(openErrorModal('Error Exporting to .csv', 'Did you choose a line?'));
+
         }
 
         const query = {
@@ -502,7 +618,18 @@ export const fetchCsv = (req) => {
         })
             .then((response)=> {
                 fileDownload(response.data, 'export.csv');
-            }, (err) => {})
+            },
+            error => {
+                let e = {...error};
+                console.log(e);
+                if(e.response == undefined){
+                    dispatch(openErrorModal('Network Error', '',true));
+                }
+                else{
+                    dispatch(openErrorModal( 'Error Exporting to .csv',`The server responded with the error: ${e.response.data.error}: ${e.response.data.message}`));
+                }
+            }
+        )
         return Promise.resolve();
     };
 };

@@ -74,7 +74,7 @@ const Table = React.createClass({
         if (this.props.isLoading) {
             view = (
                 <div className="default-message">
-                    <CircularProgress size={80} thickness={5}/>
+                    <CircularProgress size={60} thickness={4} color="indianred"/>
                 </div>
             )
         } else {

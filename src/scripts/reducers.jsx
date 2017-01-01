@@ -6,9 +6,14 @@ const user = (currentState = {}, action) => {
                 isLoggedIn: false
             });
             break;
+        case 'NOT_LOGGING':
+            return Object.assign({}, currentState, {
+                ...currentState,
+                isLogging: false
+            });
+            break;
         case 'SET_USER':
             return Object.assign({}, currentState, {
-                isLogging: false,
                 isLoggedIn: true,
                 token: action.token,
                 name: action.name,
@@ -65,6 +70,23 @@ const page = (currentState = {}, action) => {
         case 'ENTRIES_LOADED':
             return Object.assign({}, currentState, {
                 entriesLoading: false
+            });
+            break;
+        case 'OPEN_ERROR_MODAL':
+            return Object.assign({}, currentState, {
+                error: {
+                    open: true,
+                    message: action.message,
+                    title: action.title,
+                    serverError: action.serverError
+                }
+            });
+            break;
+        case 'CLOSE_ERROR_MODAL':
+            return Object.assign({}, currentState, {
+                error: {
+                    open: false
+                }
             });
             break;
         case 'MODAL_LOADING':
