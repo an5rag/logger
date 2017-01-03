@@ -15,7 +15,6 @@ const Dashboard = React.createClass({
     },
 
     onSubmit(){
-        console.log(this.state);
         this.props.fetchCsv(this.state);
     },
 

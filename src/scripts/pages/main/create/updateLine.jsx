@@ -69,7 +69,6 @@ const UpdateLine = React.createClass({
             ...basicForm,
             constraints: this.state.constraintsFormData
         };
-        console.log(req);
 
         this.props.updateLine(req);
         this.props.transition.router.stateService.go('main.log');

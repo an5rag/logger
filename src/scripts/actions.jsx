@@ -1,7 +1,8 @@
 const axios = require('axios');
 const fileDownload = require('react-file-download');
-const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
+//const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
 //const API_ADDRESS = "http://localhost:4000/api";
+import API_ADDRESS from './../../config';
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
@@ -135,7 +136,7 @@ export const login = (username, password) => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(notLogging());
                     dispatch(openErrorModal('Network Error', '',true));
@@ -160,7 +161,6 @@ export const createEmployee = (req, callback) => {
                 },
                 error => {
                     let e = {...error};
-                    console.log(e);
                     if(e.response == undefined){
                         dispatch(openErrorModal('Network Error', '',true));
                         callback(null, error.response.data);
@@ -194,7 +194,7 @@ export const fetchLines = () => {
             }, (err) => {
                 dispatch(pageLoaded());
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error while Fetching Lines', '',true));
                 }
@@ -242,7 +242,7 @@ export const createLine = (req) => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -267,7 +267,7 @@ export const deleteLine = () => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -284,7 +284,6 @@ export const updateLine = (req) => {
         const {lines} = getState();
         const id = lines.currentLine._id;
         req = {...req, id};
-        console.log("coming here");
         axios.put(API_ADDRESS + '/line', req)
             .then(function (response) {
                 dispatch(setCurrentLine(response.data.line));
@@ -294,7 +293,7 @@ export const updateLine = (req) => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -379,7 +378,7 @@ export const submitEntryForm = () => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -419,7 +418,7 @@ export const submitPostEntryForm = (clockOut) => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -514,7 +513,7 @@ export const fetchEntries = () => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -554,7 +553,7 @@ export const fetchEntriesInProgress = () => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }
@@ -621,7 +620,7 @@ export const fetchCsv = (req) => {
             },
             error => {
                 let e = {...error};
-                console.log(e);
+
                 if(e.response == undefined){
                     dispatch(openErrorModal('Network Error', '',true));
                 }

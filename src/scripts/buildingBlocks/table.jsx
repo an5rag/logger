@@ -100,7 +100,6 @@ const Table = React.createClass({
 const TableTest = React.createClass({
     onRowSelect(rows){
         console.log(rows);
-
     },
     render(){
         const headers = ['H1', 'H2', 'H3'];

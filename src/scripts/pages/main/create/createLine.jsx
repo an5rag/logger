@@ -45,8 +45,6 @@ const CreateLine = React.createClass({
             return toReturn;
         });
         req.creator = this.props.user.username;
-        console.log(req);
-
         req.token = this.props.user.token;
 
         this.props.createLine(req);

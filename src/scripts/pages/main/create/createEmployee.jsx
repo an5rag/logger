@@ -34,9 +34,8 @@ const CreateEmployee = React.createClass({
         const req = this.state.formData;
         this.props.createEmployee(req, (response, error) => {
             if(error){
-                console.log(error);
                 if(error.message.includes("duplicate")){
-                    this.handleSnackBar("This user name already exists. Please try a different one.");
+                    this.handleSnackBar("This user name already exists.");
                 } else {
                     this.handleSnackBar("Please fill all the required fields.");
                 }
