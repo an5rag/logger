@@ -53,7 +53,7 @@ const Dashboard = React.createClass({
                     </div>
                     <div className="dashboard-text">
                         Welcome to your dashboard. <br/>
-                        Today is {moment().format('dddd [,] MMMM Do YYYY [.]')}
+                        Today is {moment().format('dddd[,] MMMM Do YYYY[.]')}
                     </div>
                     </div>
                     {form}
