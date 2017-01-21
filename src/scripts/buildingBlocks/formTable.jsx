@@ -9,7 +9,8 @@ const TextInput = React.createClass({
     getDefaultProps(){
         return {
             placeholder: 'Enter text',
-            value: ''
+            value: '',
+            name: ''
         }
     },
     onChange(event){
@@ -22,6 +23,7 @@ const TextInput = React.createClass({
                    placeholder={this.props.placeholder}
                    value={this.props.value ? this.props.value : ''}
                    onChange={this.onChange}
+                   name={this.props.name}
             />
         )
     }
@@ -32,7 +34,8 @@ const NumberInput = React.createClass({
     getDefaultProps(){
         return {
             placeholder: 1234,
-            value: ''
+            value: '',
+            name: ''
         }
     },
     onChange(event){
@@ -44,6 +47,7 @@ const NumberInput = React.createClass({
                    placeholder={this.props.placeholder}
                    value={this.props.value}
                    onChange={this.onChange}
+                   name={this.props.name}
             />
         )
     }
@@ -280,12 +284,14 @@ const FormTable = React.createClass({
                     placeholder={element.placeholder}
                     value={value}
                     onChange={onChange}
+                    name={element.label}
                 />);
             case 'number':
                 return (<NumberInput
                     placeholder={element.placeholder}
                     value={value}
                     onChange={onChange}
+                    name={element.label}
                 />);
             case 'options-input':
                 return (<OptionsInput

@@ -1,8 +1,6 @@
 const axios = require('axios');
 const fileDownload = require('react-file-download');
-//const API_ADDRESS = "http://ec2-35-162-212-76.us-west-2.compute.amazonaws.com:4000/api";
-//const API_ADDRESS = "http://localhost:4000/api";
-import API_ADDRESS from './../../config';
+const API_ADDRESS  = window._API_ADRESS || "";
 
 // MAIN ACTIONS
 export const PAGE_LOADING = 'PAGE_LOADING';
