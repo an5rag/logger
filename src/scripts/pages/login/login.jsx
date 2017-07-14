@@ -50,7 +50,7 @@ const Login = React.createClass({
                     </div>
                     <div className="welcomeBox">
                         <div>
-                            <img src="https://media.giphy.com/media/TDzOWxWREjqSY/giphy.gif"/>
+                            <img src="https://i.giphy.com/media/11jQqqyF4S5MWY/giphy.webp"/>
                         </div>
                         <div className="title">
                             loggr.biz
