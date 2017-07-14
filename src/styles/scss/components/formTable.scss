@@ -9,6 +9,48 @@
   }
 }
 
+.form {
+  margin-bottom: 30px;
+  .title {
+    @extend %extra-large-font;
+    @extend %regular-font;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    color: $form-title-color;
+  }
+  .subtitle {
+    @extend %large-font;
+    @extend %semi-bold-font;
+    text-align: left;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .add-box {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    @extend %small-font;
+    @extend %light-font;
+    color: $lightGray;
+    text-align: center;
+    .add {
+      cursor: hand;
+      i {
+        margin-right: 10px;
+        position: relative;
+        top: 1px;
+      }
+
+      @extend %slow-transition;
+      &:hover {
+        color: black;
+      }
+    }
+  }
+}
+
 .form-table {
   table, td, th {
     width: 100%;

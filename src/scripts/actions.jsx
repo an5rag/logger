@@ -394,15 +394,25 @@ export const submitEntryForm = () => {
     }
 };
 
-export const submitPostEntryForm = (clockOut) => {
+export const submitPostEntryForm = (clockOut, submitAll) => {
     return (dispatch, getState) => {
         dispatch(modalLoading());
         const {user, lines, entryForm, entries} = getState();
         const currentEntryId = entries.currentEntry._id;
 
-        const entry = {
-            ...entryForm.post,
-        };
+        let entry;
+        if(submitAll) {
+            entry = {
+                ...entryForm.initial,
+                ...entryForm.global,
+                ...entryForm.post
+            }
+        } else {
+            entry = {
+                ...entryForm.post,
+            };
+        }
+
 
         if (clockOut) {
             entry['Employee Clock Out'] = user.username;

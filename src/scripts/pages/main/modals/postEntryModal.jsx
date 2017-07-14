@@ -1,25 +1,28 @@
 import React from 'react';
-import {openPostEntryModal, closePostEntryModal, submitPostEntryForm, updateEntryFormPost} from '../../../actions';
-import {connect} from 'react-redux';
+import { openPostEntryModal, closePostEntryModal, submitPostEntryForm, updateEntryFormPost, updateEntryFormInitial, updateEntryFormGlobal } from '../../../actions';
+import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {FormTable, FormTableTest} from 'buildingBlocks/formTable';
+import { FormTable, FormTableTest } from 'buildingBlocks/formTable';
 import LinearProgress from 'material-ui/LinearProgress';
 
 const PostEntryModal = React.createClass({
 
     render() {
+        const isAdmin = this.props.user.userType == 'ADMIN';
+        const isInProgress = this.props.entries.currentEntry && this.props.entries.currentEntry.inProgress;
+
         const actions = [
             <FlatButton
                 label="Update"
-                onTouchTap={this.props.submitPostEntryForm}
-                disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
+                onTouchTap={isAdmin && !isInProgress ? this.props.submitPostEntryFormSubmitAll : this.props.submitPostEntryForm}
+                disabled={!isAdmin && !isInProgress}
             />,
-          <FlatButton
+            <FlatButton
                 label="Update and Clock out"
                 onTouchTap={this.props.submitPostEntryFormAndClockOut}
-                disabled={this.props.entries.currentEntry ? !this.props.entries.currentEntry.inProgress : null}
+                disabled={!isInProgress}
             />,
             <FlatButton
                 label="Cancel"
@@ -30,9 +33,11 @@ const PostEntryModal = React.createClass({
         const line = this.props.lines.currentLine;
         const entry = this.props.entries.currentEntry;
 
-        const post = [];
+        const globalConstraints = [];
+        const initialConstraints = [];
+        const postConstraints = [];
 
-        if(line){
+        if (line) {
             for (let i = 0; i < line.constraints.length; i++) {
                 const constraint = line.constraints[i];
                 const toPush = {
@@ -47,53 +52,80 @@ const PostEntryModal = React.createClass({
                         }
                     })
                 }
-                if(entry && entry[constraint.name] != undefined){
+                if (entry && entry[constraint.name] != undefined) {
                     toPush.value = entry[constraint.name];
                 }
-
-                if (constraint.class == 'p') {
-                    post.push(toPush)
+                switch (constraint.class) {
+                    case 'p': postConstraints.push(toPush); break;
+                    case 'g': globalConstraints.push(toPush); break;
+                    case 'i': initialConstraints.push(toPush); break;
                 }
-
-
             }
         }
 
+        const globalEntryForm = (
+            <div className="form">
+                <FormTable
+                    formData={globalConstraints}
+                    onChange={this.props.updateEntryFormGlobal}
+                />
+            </div>
+        );
+
+        const initialEntryForm = (
+            <div className="form">
+                <FormTable
+                    formData={initialConstraints}
+                    onChange={this.props.updateEntryFormInitial}
+                />
+            </div>
+        );
 
         const postEntryForm = (
-            <FormTable
-                formData={post}
-                onChange={this.props.updateEntryFormPost}
-            />
+            <div className="form">
+                <FormTable
+                    formData={postConstraints}
+                    onChange={this.props.updateEntryFormPost}
+                />
+            </div>
         );
 
         const entryClockedOut = (
-            <div className="modal-message red-text">
-                <br/>
+            <div className="modal-message red-text" style={{ margin: "24px 0 24px 0" }}>
                 This entry has already been clocked out.
             </div>
         );
 
+        const updatingEntryAsAdmin = (
+            <div className="modal-message red-text" style={{ margin: "24px 0 24px 0" }}>
+                You're editing this entry as an administrator.
+            </div>
+        )
+
         let modalForm;
-        if(this.props.entries.currentEntry && this.props.entries.currentEntry.inProgress){
-            modalForm = postEntryForm
-        } else {
-            modalForm = entryClockedOut
-        }
+        modalForm = (
+            <div>
+                {isAdmin && !isInProgress ? globalEntryForm : null}
+                {isAdmin && !isInProgress ? initialEntryForm : null}
+                {isAdmin || isInProgress ? postEntryForm : null}
+            </div>
+        );
 
         const postEntryMaterial = (
-            <div>
+            <div style={{ padding: "24px" }}>
+                {!isInProgress ? entryClockedOut : null}
+                {isAdmin && !isInProgress ? updatingEntryAsAdmin : null}
                 {modalForm}
-                <br/>
+                <br />
                 {
-                    Object.keys(this.props.entries.currentEntry ? this.props.entries.currentEntry : {} ).map((key, index)=>{
+                    Object.keys(this.props.entries.currentEntry ? this.props.entries.currentEntry : {}).map((key, index) => {
                         const element = this.props.entries.currentEntry[key];
-                        return(
-                            <div key={index}>
-                                <b>{key}</b>: <span>{String(element)}</span>
-                            </div>
-                        )
-
+                        if (key != "_id" && key != "__v" && key != "lineId")
+                            return (
+                                <div key={index}>
+                                    <b>{key}</b>: <span>{String(element)}</span>
+                                </div>
+                            )
                     })
                 }
             </div>
@@ -114,7 +146,7 @@ const PostEntryModal = React.createClass({
                 autoScrollBodyContent={true}
                 onRequestClose={this.props.closePostEntryModal}
             >
-                {this.props.page.modalLoading? loading: postEntryMaterial}
+                {this.props.page.modalLoading ? loading : postEntryMaterial}
             </Dialog>
         );
     }
@@ -138,13 +170,23 @@ function mapDispatchToProps(dispatch) {
         closePostEntryModal: () => {
             dispatch(closePostEntryModal());
         },
-        submitPostEntryForm: () => {
+        submitPostEntryFormSubmitAll: () => {
             "use strict";
-            dispatch(submitPostEntryForm())
+            dispatch(submitPostEntryForm(false, true))
+        },
+        submitPostEntryForm: (submitAll) => {
+            "use strict";
+            dispatch(submitPostEntryForm(false, false))
         },
         submitPostEntryFormAndClockOut: () => {
             "use strict";
             dispatch(submitPostEntryForm(true))
+        },
+        updateEntryFormGlobal: (formAsArray, formAsObject) => {
+            dispatch(updateEntryFormGlobal(formAsObject));
+        },
+        updateEntryFormInitial: (formAsArray, formAsObject) => {
+            dispatch(updateEntryFormInitial(formAsObject));
         },
         updateEntryFormPost: (formAsArray, formAsObject) => {
             dispatch(updateEntryFormPost(formAsObject));
